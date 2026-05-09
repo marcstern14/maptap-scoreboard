@@ -1,7 +1,39 @@
 {
-  "generated": "2026-05-08T22:52:22.921617",
-  "total": 116,
+  "generated": "2026-05-08T23:24:22.985047",
+  "total": 126,
   "scores": [
+    {
+      "id": 1123,
+      "player": "Ryan",
+      "date": "April 14",
+      "isoDate": "Apr 14 2026",
+      "rounds": [
+        99,
+        95,
+        91,
+        76,
+        72
+      ],
+      "score": 820,
+      "reported": 820,
+      "perfect": 0
+    },
+    {
+      "id": 1125,
+      "player": "Caitlin",
+      "date": "April 14",
+      "isoDate": "Apr 14 2026",
+      "rounds": [
+        95,
+        90,
+        94,
+        74,
+        65
+      ],
+      "score": 790,
+      "reported": 790,
+      "perfect": 0
+    },
     {
       "id": 1131,
       "player": "Ryan",
@@ -518,7 +550,7 @@
       "id": 1450,
       "player": "Caitlin",
       "date": "April 23",
-      "isoDate": "Apr 24 2026",
+      "isoDate": "Apr 23 2026",
       "rounds": [
         76,
         93,
@@ -534,7 +566,7 @@
       "id": 1451,
       "player": "Ryan",
       "date": "April 23",
-      "isoDate": "Apr 24 2026",
+      "isoDate": "Apr 23 2026",
       "rounds": [
         94,
         93,
@@ -550,7 +582,7 @@
       "id": 1452,
       "player": "Marc",
       "date": "April 23",
-      "isoDate": "Apr 24 2026",
+      "isoDate": "Apr 23 2026",
       "rounds": [
         95,
         91,
@@ -579,10 +611,26 @@
       "perfect": 0
     },
     {
+      "id": 1461,
+      "player": "Ryan",
+      "date": "April 24",
+      "isoDate": "Apr 24 2026",
+      "rounds": [
+        92,
+        83,
+        81,
+        88,
+        80
+      ],
+      "score": 841,
+      "reported": 841,
+      "perfect": 0
+    },
+    {
       "id": 1505,
       "player": "Marc",
       "date": "April 24",
-      "isoDate": "Apr 25 2026",
+      "isoDate": "Apr 24 2026",
       "rounds": [
         99,
         91,
@@ -598,7 +646,7 @@
       "id": 1506,
       "player": "Caitlin",
       "date": "April 24",
-      "isoDate": "Apr 25 2026",
+      "isoDate": "Apr 24 2026",
       "rounds": [
         91,
         96,
@@ -608,6 +656,38 @@
       ],
       "score": 907,
       "reported": 907,
+      "perfect": 0
+    },
+    {
+      "id": 1523,
+      "player": "Caitlin",
+      "date": "April 25",
+      "isoDate": "Apr 25 2026",
+      "rounds": [
+        96,
+        96,
+        8,
+        85,
+        54
+      ],
+      "score": 625,
+      "reported": 625,
+      "perfect": 0
+    },
+    {
+      "id": 1524,
+      "player": "Marc",
+      "date": "April 25",
+      "isoDate": "Apr 25 2026",
+      "rounds": [
+        95,
+        94,
+        47,
+        75,
+        57
+      ],
+      "score": 679,
+      "reported": 679,
       "perfect": 0
     },
     {
@@ -803,19 +883,19 @@
       "perfect": 0
     },
     {
-      "id": 1607,
+      "id": 1609,
       "player": "Andy",
-      "date": "April 27",
+      "date": "April 28",
       "isoDate": "Apr 28 2026",
       "rounds": [
-        92,
+        98,
         88,
-        84,
-        94,
-        52
+        92,
+        75,
+        61
       ],
-      "score": 786,
-      "reported": 786,
+      "score": 778,
+      "reported": 778,
       "perfect": 0
     },
     {
@@ -1094,7 +1174,7 @@
       "id": 1864,
       "player": "Dan",
       "date": "April 30",
-      "isoDate": "May 1 2026",
+      "isoDate": "Apr 30 2026",
       "rounds": [
         98,
         74,
@@ -1267,6 +1347,22 @@
       "perfect": 0
     },
     {
+      "id": 1922,
+      "player": "Dan",
+      "date": "May 1",
+      "isoDate": "May 1 2026",
+      "rounds": [
+        79,
+        16,
+        90,
+        89,
+        51
+      ],
+      "score": 695,
+      "reported": 695,
+      "perfect": 0
+    },
+    {
       "id": 1923,
       "player": "Jill",
       "date": "May 1",
@@ -1414,7 +1510,7 @@
       "id": 2095,
       "player": "Marc",
       "date": "May 4",
-      "isoDate": "May 5 2026",
+      "isoDate": "May 4 2026",
       "rounds": [
         99,
         91,
@@ -1427,10 +1523,26 @@
       "perfect": 0
     },
     {
+      "id": 2098,
+      "player": "Ryan",
+      "date": "May 4",
+      "isoDate": "May 4 2026",
+      "rounds": [
+        91,
+        96,
+        89,
+        84,
+        9
+      ],
+      "score": 644,
+      "reported": 644,
+      "perfect": 0
+    },
+    {
       "id": 2099,
       "player": "Dan",
       "date": "May 4",
-      "isoDate": "May 5 2026",
+      "isoDate": "May 4 2026",
       "rounds": [
         96,
         94,
@@ -1446,7 +1558,7 @@
       "id": 2102,
       "player": "Caitlin",
       "date": "May 4",
-      "isoDate": "May 5 2026",
+      "isoDate": "May 4 2026",
       "rounds": [
         98,
         95,
@@ -1504,6 +1616,38 @@
       ],
       "score": 724,
       "reported": 724,
+      "perfect": 0
+    },
+    {
+      "id": 2171,
+      "player": "Marc",
+      "date": "May 5",
+      "isoDate": "May 5 2026",
+      "rounds": [
+        93,
+        99,
+        81,
+        71,
+        63
+      ],
+      "score": 756,
+      "reported": 756,
+      "perfect": 0
+    },
+    {
+      "id": 2179,
+      "player": "Dan",
+      "date": "May 5",
+      "isoDate": "May 5 2026",
+      "rounds": [
+        90,
+        88,
+        82,
+        62,
+        53
+      ],
+      "score": 687,
+      "reported": 687,
       "perfect": 0
     },
     {
@@ -1750,7 +1894,7 @@
       "id": 2365,
       "player": "Katie",
       "date": "May 7",
-      "isoDate": "May 8 2026",
+      "isoDate": "May 7 2026",
       "rounds": [
         95,
         98,
@@ -1777,6 +1921,22 @@
       "score": 763,
       "reported": 763,
       "perfect": 1
+    },
+    {
+      "id": 2382,
+      "player": "Katie",
+      "date": "May 8",
+      "isoDate": "May 8 2026",
+      "rounds": [
+        97,
+        78,
+        49,
+        45,
+        99
+      ],
+      "score": 705,
+      "reported": 705,
+      "perfect": 0
     },
     {
       "id": 2383,
