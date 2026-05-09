@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Maptap Scoreboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0e0e11;
+  --surface: #16161a;
+  --surface2: #1e1e24;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --text: #f0efe8;
+  --muted: #888786;
+  --accent: #5DCAA5;
+  --accent2: #AFA9EC;
+  --gold: #FAC775;
+  --silver: #C8C8C8;
+  --bronze: #CD8C5A;
+  --coral: #F0997B;
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+  padding: 2rem 1rem 4rem;
+}
+
+header {
+  max-width: 960px;
+  margin: 0 auto 2.5rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.logo { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -0.02em; }
+.logo span { color: var(--accent); }
+.tagline { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.2rem; }
+.generated-at { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; font-family: 'DM Mono', monospace; }
+
+.container { max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem; }
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.panel-title {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+
+.winners-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+@media (max-width: 600px) { .winners-grid { grid-template-columns: 1fr; } }
+
+.winner-card {
+  border-radius: var(--radius);
+  padding: 1.25rem 1.25rem 1rem;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.winner-card.daily   { border-color: rgba(93,202,165,0.3);  background: rgba(93,202,165,0.05); }
+.winner-card.weekly  { border-color: rgba(175,169,236,0.3); background: rgba(175,169,236,0.05); }
+.winner-card.alltime { border-color: rgba(250,199,117,0.3); background: rgba(250,199,117,0.05); }
+
+.winner-period { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.35rem; }
+.winner-card.daily   .winner-period { color: var(--accent); }
+.winner-card.weekly  .winner-period { color: var(--accent2); }
+.winner-card.alltime .winner-period { color: var(--gold); }
+
+.winner-name { font-size: 1.4rem; font-weight: 800; line-height: 1.1; margin-bottom: 0.25rem; }
+.winner-meta { font-size: 0.75rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+.winner-trophy { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); font-size: 2rem; opacity: 0.18; }
+
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+.stat-label { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.stat-value { font-size: 2rem; font-weight: 800; line-height: 1; }
+.stat-value.accent { color: var(--accent); }
+.stat-value.gold   { color: var(--gold); }
+.stat-value.purple { color: var(--accent2); }
+.stat-value.coral  { color: var(--coral); }
+
+.podium {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
+  align-items: end;
+  margin-bottom: 0.5rem;
+}
+.podium-slot { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.podium-name { font-weight: 700; font-size: 0.9rem; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.podium-score { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--muted); }
+.podium-bar {
+  width: 100%; border-radius: 6px 6px 0 0;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: 0.6rem; font-weight: 800; font-size: 1.3rem;
+  transition: height 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.podium-bar.gold   { background: rgba(250,199,117,0.15); border: 1px solid rgba(250,199,117,0.35); }
+.podium-bar.silver { background: rgba(200,200,200,0.1);  border: 1px solid rgba(200,200,200,0.25); }
+.podium-bar.bronze { background: rgba(205,140,90,0.1);   border: 1px solid rgba(205,140,90,0.25); }
+
+.divider { height: 1px; background: var(--border); margin: 1rem 0; }
+
+.leaderboard { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.lb-row {
+  display: grid;
+  grid-template-columns: 2rem 1fr 5rem 5rem 4rem 4rem;
+  gap: 0.5rem;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  transition: border-color 0.2s;
+}
+@media (max-width: 640px) {
+  .lb-row { grid-template-columns: 2rem 1fr 5rem 4rem; }
+  .lb-best, .lb-games { display: none; }
+}
+.lb-row:hover { border-color: var(--border2); }
+.lb-row.header-row { background: transparent; border-color: transparent; padding-bottom: 0.2rem; }
+.lb-row.header-row span { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.lb-row.rank-1 { border-color: rgba(250,199,117,0.35); }
+.lb-row.rank-2 { border-color: rgba(200,200,200,0.2); }
+.lb-row.rank-3 { border-color: rgba(205,140,90,0.25); }
+
+.rank-num { font-weight: 800; font-size: 0.9rem; color: var(--muted); text-align: center; }
+.rank-num.g { color: var(--gold); }
+.rank-num.s { color: var(--silver); }
+.rank-num.b { color: var(--bronze); }
+
+.player-name { font-weight: 700; font-size: 0.95rem; }
+.lb-avg { text-align: right; font-family: 'DM Mono', monospace; font-weight: 500; color: var(--accent); font-size: 1.05rem; }
+.lb-best-val { text-align: right; font-family: 'DM Mono', monospace; font-size: 0.82rem; color: var(--muted); }
+.lb-games-val { text-align: right; color: var(--muted); font-size: 0.8rem; }
+.lb-perfect { text-align: right; font-family: 'DM Mono', monospace; font-size: 0.82rem; color: var(--gold); font-weight: 500; }
+
+.mini-bar { height: 3px; background: var(--surface2); border-radius: 2px; margin-top: 0.35rem; overflow: hidden; }
+.mini-bar-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
+
+.trend-chip { display: inline-block; font-size: 0.65rem; font-family: 'DM Mono', monospace; padding: 0.1rem 0.4rem; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+.trend-up   { background: rgba(93,202,165,0.15); color: var(--accent); }
+.trend-down { background: rgba(240,153,123,0.15); color: var(--coral); }
+.trend-flat { background: var(--surface2); color: var(--muted); }
+
+.history-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+.history-table th { text-align: left; font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; padding: 0 0.75rem 0.5rem; font-weight: 400; }
+.history-table td { padding: 0.6rem 0.75rem; border-top: 1px solid var(--border); font-family: 'DM Mono', monospace; font-size: 0.8rem; }
+.history-table tr:hover td { background: var(--surface2); }
+.history-table td.player-col { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.85rem; }
+.history-table td.score-col { color: var(--accent); }
+.history-table td.date-col { color: var(--muted); }
+.perfect-pip { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-left: 3px; vertical-align: middle; }
+
+.dist-grid { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.5rem; }
+.dist-row { display: grid; grid-template-columns: 3.5rem 1fr 3rem; align-items: center; gap: 0.5rem; font-size: 0.75rem; font-family: 'DM Mono', monospace; color: var(--muted); }
+.dist-bar-bg { background: var(--surface2); border-radius: 2px; height: 8px; overflow: hidden; }
+.dist-bar-fill { height: 100%; background: var(--accent2); border-radius: 2px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
+
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem; }
+.filter-row { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+
+select { background: var(--surface2); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text); font-family: 'Syne', sans-serif; font-size: 0.8rem; padding: 0.35rem 0.6rem; outline: none; }
+select:focus { border-color: var(--accent); }
+
+.empty { text-align: center; padding: 3rem 1rem; color: var(--muted); font-size: 0.9rem; line-height: 1.8; }
+.empty strong { color: var(--text); display: block; font-size: 1.1rem; margin-bottom: 0.5rem; }
+.loading { text-align: center; padding: 4rem 1rem; color: var(--muted); font-size: 0.9rem; }
+
+.error-banner { background: rgba(240,153,123,0.1); border: 1px solid rgba(240,153,123,0.3); border-radius: var(--radius-sm); padding: 1rem 1.25rem; color: var(--coral); font-size: 0.85rem; line-height: 1.6; display: none; }
+.error-banner code { font-family: 'DM Mono', monospace; font-size: 0.8rem; background: rgba(240,153,123,0.1); padding: 0.1rem 0.35rem; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">Map<span>tap</span></div>
+    <div class="tagline">Scoreboard</div>
+    <div class="generated-at" id="generated-at"></div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="error-banner" id="error-banner">
+    <strong>Could not load scores.json</strong><br>
+    Make sure <code>scores.json</code> is next to <code>index.html</code> and pushed to GitHub.<br>
+    Run <code>python3 extract_maptap.py</code> to regenerate it.
+  </div>
+
+  <div id="loading" class="loading">Loading scores…</div>
+
+  <div id="main-content" style="display:none;flex-direction:column;gap:1.5rem;">
+
+    <!-- Winner banners -->
+    <div>
+      <div class="panel-title">Current champions</div>
+      <div class="winners-grid" id="winners-grid"></div>
+    </div>
+
+    <!-- Global stats -->
+    <div>
+      <div class="panel-title">Overall stats</div>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-label">Total games</div><div class="stat-value accent" id="stat-total">—</div></div>
+        <div class="stat-card"><div class="stat-label">Family avg</div><div class="stat-value purple" id="stat-avg">—</div></div>
+        <div class="stat-card"><div class="stat-label">Perfect rounds (100s)</div><div class="stat-value gold" id="stat-perfect">—</div></div>
+        <div class="stat-card"><div class="stat-label">All-time best</div><div class="stat-value coral" id="stat-high">—</div></div>
+      </div>
+    </div>
+
+    <!-- Podium + Leaderboard -->
+    <div class="panel">
+      <div class="section-header">
+        <div class="panel-title" style="margin:0;">Leaderboard</div>
+        <div class="filter-row">
+          <label style="font-size:0.75rem;color:var(--muted);">Sort by</label>
+          <select id="lb-sort" onchange="renderLeaderboard()">
+            <option value="avg">Avg score</option>
+            <option value="best">Best score</option>
+            <option value="games">Games played</option>
+            <option value="perfect">Perfect rounds</option>
+          </select>
+        </div>
+      </div>
+      <div class="podium" id="podium"></div>
+      <div class="divider"></div>
+      <div class="leaderboard" id="leaderboard"></div>
+    </div>
+
+    <!-- Distribution -->
+    <div class="panel">
+      <div class="section-header">
+        <div class="panel-title" style="margin:0;">Score distribution</div>
+        <div class="filter-row">
+          <select id="dist-player" onchange="renderDistribution()"><option value="all">All players</option></select>
+        </div>
+      </div>
+      <div class="dist-grid" id="dist-grid"></div>
+    </div>
+
+    <!-- History -->
+    <div class="panel">
+      <div class="section-header">
+        <div class="panel-title" style="margin:0;">Score history</div>
+        <div class="filter-row">
+          <select id="filter-player" onchange="renderHistory()"><option value="all">All players</option></select>
+          <select id="filter-sort" onchange="renderHistory()">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="highest">Highest score</option>
+            <option value="lowest">Lowest score</option>
+          </select>
+        </div>
+      </div>
+      <div id="history-container"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const WEIGHTS = [1, 1, 2, 3, 3];
+let ALL_SCORES = [];
+
+function perfectRounds(score) {
+  return (score.rounds || []).filter(r => r === 100).length;
+}
+
+function getPlayerStats(scores) {
+  const map = {};
+  for (const s of scores) {
+    if (!map[s.player]) map[s.player] = { player: s.player, scores: [] };
+    map[s.player].scores.push(s);
+  }
+  return Object.values(map).map(p => {
+    const vals = p.scores.map(s => s.score);
+    const byDate = [...p.scores].sort((a, b) => (b.isoDate || '').localeCompare(a.isoDate || ''));
+    const recent = byDate.slice(0, 3).map(s => s.score);
+    const older  = byDate.slice(3, 6).map(s => s.score);
+    const rAvg = recent.length ? recent.reduce((a,b)=>a+b,0)/recent.length : null;
+    const oAvg = older.length  ? older.reduce((a,b)=>a+b,0)/older.length   : null;
+    let trend = 'flat';
+    if (rAvg !== null && oAvg !== null) {
+      if (rAvg - oAvg > 10) trend = 'up';
+      else if (oAvg - rAvg > 10) trend = 'down';
+    }
+    return {
+      player:  p.player,
+      games:   p.scores.length,
+      avg:     vals.reduce((a,b)=>a+b,0) / vals.length,
+      best:    Math.max(...vals),
+      perfect: p.scores.reduce((n,s) => n + perfectRounds(s), 0),
+      trend,
+    };
+  });
+}
+
+function daysAgo(n) {
+  const d = new Date(); d.setDate(d.getDate() - n);
+  return d.toISOString().slice(0, 10);
+}
+
+async function loadData() {
+  try {
+    const res = await fetch('scores.json?v=' + Date.now());
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    ALL_SCORES = data.scores || [];
+
+    const gen = data.generated ? new Date(data.generated) : null;
+    if (gen) {
+      document.getElementById('generated-at').textContent =
+        'Updated ' + gen.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) +
+        ' at ' + gen.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+    }
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('main-content').style.display = 'flex';
+    populateFilters();
+    renderAll();
+  } catch(e) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('error-banner').style.display = 'block';
+    console.error(e);
+  }
+}
+
+function populateFilters() {
+  const players = [...new Set(ALL_SCORES.map(s=>s.player))].sort();
+  const opts = '<option value="all">All players</option>' + players.map(p=>`<option value="${p}">${p}</option>`).join('');
+  document.getElementById('filter-player').innerHTML = opts;
+  document.getElementById('dist-player').innerHTML = opts;
+}
+
+function renderWinners() {
+  const el = document.getElementById('winners-grid');
+  if (!ALL_SCORES.length) { el.innerHTML=''; return; }
+
+  const today   = new Date().toISOString().slice(0,10);
+  const weekAgo = daysAgo(7);
+
+  // Daily: highest single score today
+  const todayScores = ALL_SCORES.filter(s => (s.isoDate||'').slice(0,10) === today);
+  let daily = null;
+  if (todayScores.length) {
+    const b = todayScores.reduce((a,b) => b.score>a.score ? b : a);
+    daily = { name: b.player, value: b.score, sub: 'score today' };
+  }
+
+  // Weekly: best avg over last 7 days
+  const weekScores = ALL_SCORES.filter(s => (s.isoDate||'') >= weekAgo);
+  let weekly = null;
+  if (weekScores.length) {
+    const ws = getPlayerStats(weekScores).sort((a,b)=>b.avg-a.avg)[0];
+    weekly = { name: ws.player, value: Math.round(ws.avg), sub: `avg · ${ws.games} game${ws.games>1?'s':''} this week` };
+  }
+
+  // All-time: best avg (min 3 games)
+  const as = getPlayerStats(ALL_SCORES).filter(p=>p.games>=3).sort((a,b)=>b.avg-a.avg);
+  let alltime = null;
+  if (as.length) {
+    alltime = { name: as[0].player, value: Math.round(as[0].avg), sub: `avg · ${as[0].games} games all time` };
+  }
+
+  const card = (cls, period, trophy, w, empty) => w
+    ? `<div class="winner-card ${cls}">
+        <div class="winner-period">${period}</div>
+        <div class="winner-name">${w.name}</div>
+        <div class="winner-meta">${w.value} · ${w.sub}</div>
+        <div class="winner-trophy">${trophy}</div>
+       </div>`
+    : `<div class="winner-card ${cls}">
+        <div class="winner-period">${period}</div>
+        <div class="winner-name" style="color:var(--muted);font-size:1rem;">${empty}</div>
+        <div class="winner-trophy">${trophy}</div>
+       </div>`;
+
+  el.innerHTML =
+    card('daily',   "Today's winner",   '🎯', daily,   'No games today') +
+    card('weekly',  'This week',         '📅', weekly,  'No games this week') +
+    card('alltime', 'All-time champion', '👑', alltime, 'Need 3+ games');
+}
+
+function renderStats() {
+  if (!ALL_SCORES.length) return;
+  const vals = ALL_SCORES.map(s=>s.score);
+  document.getElementById('stat-total').textContent   = ALL_SCORES.length;
+  document.getElementById('stat-avg').textContent     = Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
+  document.getElementById('stat-perfect').textContent = ALL_SCORES.reduce((n,s)=>n+perfectRounds(s),0);
+  document.getElementById('stat-high').textContent    = Math.max(...vals);
+}
+
+function renderPodium(stats) {
+  const el = document.getElementById('podium');
+  const top3 = [...stats].sort((a,b)=>b.avg-a.avg).slice(0,3);
+  if (top3.length < 2) { el.innerHTML=''; return; }
+
+  // Visual order: 2nd | 1st | 3rd
+  const slots   = top3.length >= 3 ? [top3[1], top3[0], top3[2]] : [null, top3[0], top3[1]];
+  const heights = top3.length >= 3 ? [95, 130, 70] : [95, 130, 0];
+  const classes = ['silver','gold','bronze'];
+  const medals  = ['🥈','🥇','🥉'];
+
+  el.innerHTML = slots.map((p,i) => {
+    if (!p) return '<div></div>';
+    return `<div class="podium-slot">
+      <div class="podium-name">${p.player}</div>
+      <div class="podium-score">${Math.round(p.avg)} avg</div>
+      <div class="podium-bar ${classes[i]}" style="height:${heights[i]}px">${medals[i]}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderLeaderboard() {
+  const el = document.getElementById('leaderboard');
+  if (!ALL_SCORES.length) {
+    el.innerHTML='<div class="empty"><strong>No scores yet</strong></div>';
+    document.getElementById('podium').innerHTML='';
+    return;
+  }
+
+  const sortBy = document.getElementById('lb-sort').value;
+  const stats  = getPlayerStats(ALL_SCORES);
+  renderPodium(stats);
+
+  stats.sort((a,b) => {
+    if (sortBy==='avg')     return b.avg-a.avg;
+    if (sortBy==='best')    return b.best-a.best;
+    if (sortBy==='games')   return b.games-a.games;
+    if (sortBy==='perfect') return b.perfect-a.perfect;
+    return 0;
+  });
+
+  const maxAvg = Math.max(...stats.map(s=>s.avg));
+  const tL = {up:'↑ hot',down:'↓ cold',flat:'→'};
+  const tC = {up:'trend-up',down:'trend-down',flat:'trend-flat'};
+
+  const header = `<div class="lb-row header-row">
+    <span></span><span>Player</span>
+    <span style="text-align:right">Avg</span>
+    <span class="lb-best" style="text-align:right">Best</span>
+    <span class="lb-games" style="text-align:right">Games</span>
+    <span style="text-align:right">100s</span>
+  </div>`;
+
+  const rows = stats.map((p,i) => {
+    const rc = i===0?'g':i===1?'s':i===2?'b':'';
+    const rl = i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'';
+    const pct = maxAvg>0 ? (p.avg/maxAvg*100).toFixed(1) : 0;
+    const trend = p.games>=4 ? `<span class="trend-chip ${tC[p.trend]}">${tL[p.trend]}</span>` : '';
+    return `<div class="lb-row ${rl}">
+      <div class="rank-num ${rc}">${i+1}</div>
+      <div>
+        <div class="player-name">${p.player}${trend}</div>
+        <div class="mini-bar"><div class="mini-bar-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="lb-avg">${Math.round(p.avg)}</div>
+      <div class="lb-best-val lb-best">${p.best}</div>
+      <div class="lb-games-val lb-games">${p.games}</div>
+      <div class="lb-perfect">${p.perfect>0?p.perfect:'—'}</div>
+    </div>`;
+  });
+
+  el.innerHTML = header + rows.join('');
+}
+
+function renderDistribution() {
+  const el = document.getElementById('dist-grid');
+  const player = document.getElementById('dist-player').value;
+  const scores = player==='all' ? ALL_SCORES : ALL_SCORES.filter(s=>s.player===player);
+
+  const buckets = [
+    {label:'900–1000',min:900,max:1000},
+    {label:'800–899', min:800,max:899},
+    {label:'700–799', min:700,max:799},
+    {label:'600–699', min:600,max:699},
+    {label:'<600',    min:0,  max:599},
+  ];
+  const counts = buckets.map(b=>scores.filter(s=>s.score>=b.min&&s.score<=b.max).length);
+  const maxC   = Math.max(...counts,1);
+
+  el.innerHTML = buckets.map((b,i)=>`
+    <div class="dist-row">
+      <span>${b.label}</span>
+      <div class="dist-bar-bg"><div class="dist-bar-fill" style="width:${(counts[i]/maxC*100).toFixed(1)}%"></div></div>
+      <span style="text-align:right">${counts[i]}</span>
+    </div>`).join('');
+}
+
+function renderHistory() {
+  const el = document.getElementById('history-container');
+  const player = document.getElementById('filter-player').value;
+  const sort   = document.getElementById('filter-sort').value;
+  let scores = player==='all' ? [...ALL_SCORES] : ALL_SCORES.filter(s=>s.player===player);
+
+  scores.sort((a,b)=>{
+    if (sort==='newest')  return (b.isoDate||'').localeCompare(a.isoDate||'');
+    if (sort==='oldest')  return (a.isoDate||'').localeCompare(b.isoDate||'');
+    if (sort==='highest') return b.score-a.score;
+    if (sort==='lowest')  return a.score-b.score;
+    return 0;
+  });
+
+  if (!scores.length) { el.innerHTML='<div class="empty"><strong>No scores found</strong></div>'; return; }
+
+  const rows = scores.map(s => {
+    const pr   = perfectRounds(s);
+    const pips = Array(pr).fill('<span class="perfect-pip" title="perfect round"></span>').join('');
+    const rStr = s.rounds
+      ? s.rounds.map((r,i)=>`<span style="${r===100?'color:var(--gold)':''}">${r*WEIGHTS[i]}</span>`).join(' · ')
+      : '—';
+    return `<tr>
+      <td class="date-col">${s.date||s.isoDate||'—'}</td>
+      <td class="player-col">${s.player}${pips}</td>
+      <td style="font-size:0.75rem;">${rStr}</td>
+      <td class="score-col">${s.score}</td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML = `<table class="history-table">
+    <thead><tr><th>Date</th><th>Player</th><th>Rounds (weighted)</th><th>Score</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+function renderAll() {
+  renderWinners();
+  renderStats();
+  renderLeaderboard();
+  renderDistribution();
+  renderHistory();
+}
+
+loadData();
+</script>
+</body>
+</html>
