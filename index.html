@@ -272,7 +272,8 @@ header {
 .trend-down { background: var(--trend-down-bg); color: var(--coral); }
 .trend-flat { background: var(--surface2); color: var(--muted); }
 
-.history-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+.history-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.history-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; min-width: 400px; }
 .history-table th { text-align: left; font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; padding: 0 0.75rem 0.5rem; font-weight: 400; }
 .history-table td { padding: 0.6rem 0.75rem; border-top: 1px solid var(--border); font-family: 'DM Mono', monospace; font-size: 0.8rem; }
 .history-table tr:hover td { background: var(--surface2); }
@@ -850,10 +851,10 @@ function renderHistory() {
     </tr>`;
   }).join('');
 
-  el.innerHTML = `<table class="history-table">
+  el.innerHTML = `<div class="history-wrap"><table class="history-table">
     <thead><tr><th>Date</th><th>Player</th><th>Score</th><th>Total</th></tr></thead>
     <tbody>${rows}</tbody>
-  </table>`;
+  </table></div>`;
 }
 
 function renderAll() {
