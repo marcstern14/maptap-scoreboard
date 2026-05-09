@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Maptap Scoreboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -25,12 +25,91 @@
   --coral: #F0997B;
   --radius: 14px;
   --radius-sm: 8px;
+
+  --accent-fill: rgba(93,202,165,0.05);
+  --accent-edge: rgba(93,202,165,0.3);
+  --accent2-fill: rgba(175,169,236,0.05);
+  --accent2-edge: rgba(175,169,236,0.3);
+  --gold-fill: rgba(250,199,117,0.15);
+  --gold-edge: rgba(250,199,117,0.35);
+  --silver-fill: rgba(200,200,200,0.1);
+  --silver-edge: rgba(200,200,200,0.25);
+  --bronze-fill: rgba(205,140,90,0.1);
+  --bronze-edge: rgba(205,140,90,0.25);
+  --coral-fill: rgba(240,153,123,0.1);
+  --coral-edge: rgba(240,153,123,0.3);
+  --trend-up-bg: rgba(93,202,165,0.15);
+  --trend-down-bg: rgba(240,153,123,0.15);
+}
+
+[data-theme="light"] {
+  --bg: #f2ece0;
+  --surface: #ffffff;
+  --surface2: #e8e2d4;
+  --border: rgba(0,0,0,0.08);
+  --border2: rgba(0,0,0,0.14);
+  --text: #2a3128;
+  --muted: #6b7a6e;
+  --accent: #2d7a4a;
+  --accent2: #3a7490;
+  --gold: #b8892a;
+  --silver: #6b706a;
+  --bronze: #96602e;
+  --coral: #a85840;
+
+  --accent-fill: rgba(45,122,74,0.06);
+  --accent-edge: rgba(45,122,74,0.25);
+  --accent2-fill: rgba(58,116,144,0.06);
+  --accent2-edge: rgba(58,116,144,0.25);
+  --gold-fill: rgba(184,137,42,0.1);
+  --gold-edge: rgba(184,137,42,0.3);
+  --silver-fill: rgba(107,112,106,0.08);
+  --silver-edge: rgba(107,112,106,0.2);
+  --bronze-fill: rgba(150,96,46,0.08);
+  --bronze-edge: rgba(150,96,46,0.2);
+  --coral-fill: rgba(168,88,64,0.08);
+  --coral-edge: rgba(168,88,64,0.25);
+  --trend-up-bg: rgba(45,122,74,0.1);
+  --trend-down-bg: rgba(168,88,64,0.1);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f2ece0;
+    --surface: #ffffff;
+    --surface2: #e8e2d4;
+    --border: rgba(0,0,0,0.08);
+    --border2: rgba(0,0,0,0.14);
+    --text: #2a3128;
+    --muted: #6b7a6e;
+    --accent: #2d7a4a;
+    --accent2: #3a7490;
+    --gold: #b8892a;
+    --silver: #6b706a;
+    --bronze: #96602e;
+    --coral: #a85840;
+
+    --accent-fill: rgba(45,122,74,0.06);
+    --accent-edge: rgba(45,122,74,0.25);
+    --accent2-fill: rgba(58,116,144,0.06);
+    --accent2-edge: rgba(58,116,144,0.25);
+    --gold-fill: rgba(184,137,42,0.1);
+    --gold-edge: rgba(184,137,42,0.3);
+    --silver-fill: rgba(107,112,106,0.08);
+    --silver-edge: rgba(107,112,106,0.2);
+    --bronze-fill: rgba(150,96,46,0.08);
+    --bronze-edge: rgba(150,96,46,0.2);
+    --coral-fill: rgba(168,88,64,0.08);
+    --coral-edge: rgba(168,88,64,0.25);
+    --trend-up-bg: rgba(45,122,74,0.1);
+    --trend-down-bg: rgba(168,88,64,0.1);
+  }
 }
 
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Syne', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   min-height: 100vh;
   padding: 2rem 1rem 4rem;
 }
@@ -45,7 +124,10 @@ header {
   flex-wrap: wrap;
 }
 
-.logo { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -0.02em; }
+.header-left { display: flex; align-items: center; gap: 1rem; }
+#globe { width: 56px; height: 56px; flex-shrink: 0; }
+
+.logo { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: 0.05em; font-family: 'Orbitron', sans-serif; text-transform: uppercase; }
 .logo span { color: var(--accent); }
 .tagline { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.2rem; }
 .generated-at { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; font-family: 'DM Mono', monospace; }
@@ -78,26 +160,26 @@ header {
   border-radius: var(--radius);
   padding: 1.25rem 1.25rem 1rem;
   border: 1px solid var(--border);
-  position: relative;
-  overflow: hidden;
+  text-align: center;
 }
-.winner-card.daily   { border-color: rgba(93,202,165,0.3);  background: rgba(93,202,165,0.05); }
-.winner-card.weekly  { border-color: rgba(175,169,236,0.3); background: rgba(175,169,236,0.05); }
-.winner-card.alltime { border-color: rgba(250,199,117,0.3); background: rgba(250,199,117,0.05); }
+.winner-card.daily   { border-color: var(--accent2-edge); background: var(--accent2-fill); }
+.winner-card.weekly  { border-color: var(--accent-edge);  background: var(--accent-fill); }
+.winner-card.alltime { border-color: var(--gold-edge);    background: var(--gold-fill); }
 
 .winner-period { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.35rem; }
-.winner-card.daily   .winner-period { color: var(--accent); }
-.winner-card.weekly  .winner-period { color: var(--accent2); }
+.winner-card.daily   .winner-period { color: var(--accent2); }
+.winner-card.weekly  .winner-period { color: var(--accent); }
 .winner-card.alltime .winner-period { color: var(--gold); }
 
-.winner-name { font-size: 1.4rem; font-weight: 800; line-height: 1.1; margin-bottom: 0.25rem; }
+.winner-name { font-size: 1.4rem; font-weight: 700; line-height: 1.1; margin-bottom: 0.25rem; }
 .winner-meta { font-size: 0.75rem; color: var(--muted); font-family: 'DM Mono', monospace; }
-.winner-trophy { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); font-size: 2rem; opacity: 0.18; }
 
 .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
-.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; text-align: center; }
 .stat-label { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
-.stat-value { font-size: 2rem; font-weight: 800; line-height: 1; }
+.stat-value { font-size: 2rem; font-weight: 500; line-height: 1; font-family: 'DM Mono', monospace; }
+.stat-name { font-size: 0.85rem; font-weight: 600; margin-top: 0.3rem; }
+.stat-sub { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
 .stat-value.accent { color: var(--accent); }
 .stat-value.gold   { color: var(--gold); }
 .stat-value.purple { color: var(--accent2); }
@@ -119,9 +201,9 @@ header {
   padding-bottom: 0.6rem; font-weight: 800; font-size: 1.3rem;
   transition: height 0.6s cubic-bezier(0.4,0,0.2,1);
 }
-.podium-bar.gold   { background: rgba(250,199,117,0.15); border: 1px solid rgba(250,199,117,0.35); }
-.podium-bar.silver { background: rgba(200,200,200,0.1);  border: 1px solid rgba(200,200,200,0.25); }
-.podium-bar.bronze { background: rgba(205,140,90,0.1);   border: 1px solid rgba(205,140,90,0.25); }
+.podium-bar.gold   { background: var(--gold-fill);   border: 1px solid var(--gold-edge); }
+.podium-bar.silver { background: var(--silver-fill); border: 1px solid var(--silver-edge); }
+.podium-bar.bronze { background: var(--bronze-fill); border: 1px solid var(--bronze-edge); }
 
 .divider { height: 1px; background: var(--border); margin: 1rem 0; }
 
@@ -146,11 +228,11 @@ header {
 .lb-row:hover { border-color: var(--border2); }
 .lb-row.header-row { background: transparent; border-color: transparent; padding-bottom: 0.2rem; }
 .lb-row.header-row span { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
-.lb-row.rank-1 { border-color: rgba(250,199,117,0.35); }
-.lb-row.rank-2 { border-color: rgba(200,200,200,0.2); }
-.lb-row.rank-3 { border-color: rgba(205,140,90,0.25); }
+.lb-row.rank-1 { border-color: var(--gold-edge); }
+.lb-row.rank-2 { border-color: var(--silver-edge); }
+.lb-row.rank-3 { border-color: var(--bronze-edge); }
 
-.rank-num { font-weight: 800; font-size: 0.9rem; color: var(--muted); text-align: center; }
+.rank-num { font-weight: 800; font-size: 0.9rem; color: var(--muted); text-align: center; font-family: 'DM Mono', monospace; }
 .rank-num.g { color: var(--gold); }
 .rank-num.s { color: var(--silver); }
 .rank-num.b { color: var(--bronze); }
@@ -158,22 +240,22 @@ header {
 .player-name { font-weight: 700; font-size: 0.95rem; }
 .lb-avg { text-align: right; font-family: 'DM Mono', monospace; font-weight: 500; color: var(--accent); font-size: 1.05rem; }
 .lb-best-val { text-align: right; font-family: 'DM Mono', monospace; font-size: 0.82rem; color: var(--muted); }
-.lb-games-val { text-align: right; color: var(--muted); font-size: 0.8rem; }
+.lb-games-val { text-align: right; font-family: 'DM Mono', monospace; color: var(--muted); font-size: 0.8rem; }
 .lb-perfect { text-align: right; font-family: 'DM Mono', monospace; font-size: 0.82rem; color: var(--gold); font-weight: 500; }
 
 .mini-bar { height: 3px; background: var(--surface2); border-radius: 2px; margin-top: 0.35rem; overflow: hidden; }
 .mini-bar-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
 
 .trend-chip { display: inline-block; font-size: 0.65rem; font-family: 'DM Mono', monospace; padding: 0.1rem 0.4rem; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
-.trend-up   { background: rgba(93,202,165,0.15); color: var(--accent); }
-.trend-down { background: rgba(240,153,123,0.15); color: var(--coral); }
+.trend-up   { background: var(--trend-up-bg); color: var(--accent); }
+.trend-down { background: var(--trend-down-bg); color: var(--coral); }
 .trend-flat { background: var(--surface2); color: var(--muted); }
 
 .history-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
 .history-table th { text-align: left; font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; padding: 0 0.75rem 0.5rem; font-weight: 400; }
 .history-table td { padding: 0.6rem 0.75rem; border-top: 1px solid var(--border); font-family: 'DM Mono', monospace; font-size: 0.8rem; }
 .history-table tr:hover td { background: var(--surface2); }
-.history-table td.player-col { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.85rem; }
+.history-table td.player-col { font-weight: 600; font-size: 0.85rem; }
 .history-table td.score-col { color: var(--accent); }
 .history-table td.date-col { color: var(--muted); }
 .perfect-pip { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-left: 3px; vertical-align: middle; }
@@ -186,25 +268,49 @@ header {
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem; }
 .filter-row { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
 
-select { background: var(--surface2); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text); font-family: 'Syne', sans-serif; font-size: 0.8rem; padding: 0.35rem 0.6rem; outline: none; }
+select { background: var(--surface2); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text); font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; padding: 0.35rem 0.6rem; outline: none; }
 select:focus { border-color: var(--accent); }
 
 .empty { text-align: center; padding: 3rem 1rem; color: var(--muted); font-size: 0.9rem; line-height: 1.8; }
 .empty strong { color: var(--text); display: block; font-size: 1.1rem; margin-bottom: 0.5rem; }
 .loading { text-align: center; padding: 4rem 1rem; color: var(--muted); font-size: 0.9rem; }
 
-.error-banner { background: rgba(240,153,123,0.1); border: 1px solid rgba(240,153,123,0.3); border-radius: var(--radius-sm); padding: 1rem 1.25rem; color: var(--coral); font-size: 0.85rem; line-height: 1.6; display: none; }
-.error-banner code { font-family: 'DM Mono', monospace; font-size: 0.8rem; background: rgba(240,153,123,0.1); padding: 0.1rem 0.35rem; border-radius: 4px; }
+.error-banner { background: var(--coral-fill); border: 1px solid var(--coral-edge); border-radius: var(--radius-sm); padding: 1rem 1.25rem; color: var(--coral); font-size: 0.85rem; line-height: 1.6; display: none; }
+.error-banner code { font-family: 'DM Mono', monospace; font-size: 0.8rem; background: var(--coral-fill); padding: 0.1rem 0.35rem; border-radius: 4px; }
+
+.theme-toggle {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  font-size: 1.1rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+.theme-toggle:hover { border-color: var(--accent); color: var(--text); }
 </style>
+<script>
+(function(){var t=localStorage.getItem('maptap-theme');if(t)document.documentElement.setAttribute('data-theme',t)})();
+</script>
 </head>
 <body>
 
 <header>
-  <div>
-    <div class="logo">Map<span>tap</span></div>
-    <div class="tagline">Scoreboard</div>
-    <div class="generated-at" id="generated-at"></div>
+  <div class="header-left">
+    <canvas id="globe" width="56" height="56"></canvas>
+    <div>
+      <div class="logo">Map<span>tap</span></div>
+      <div class="tagline">Scoreboard</div>
+      <div class="generated-at" id="generated-at"></div>
+    </div>
   </div>
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"></button>
 </header>
 
 <div class="container">
@@ -226,13 +332,8 @@ select:focus { border-color: var(--accent); }
 
     <!-- Global stats -->
     <div>
-      <div class="panel-title">Overall stats</div>
-      <div class="stat-grid">
-        <div class="stat-card"><div class="stat-label">Total games</div><div class="stat-value accent" id="stat-total">—</div></div>
-        <div class="stat-card"><div class="stat-label">Family avg</div><div class="stat-value purple" id="stat-avg">—</div></div>
-        <div class="stat-card"><div class="stat-label">Perfect rounds (100s)</div><div class="stat-value gold" id="stat-perfect">—</div></div>
-        <div class="stat-card"><div class="stat-label">All-time best</div><div class="stat-value coral" id="stat-high">—</div></div>
-      </div>
+      <div class="panel-title">Hall of fame</div>
+      <div class="stat-grid" id="stat-grid"></div>
     </div>
 
     <!-- Podium + Leaderboard -->
@@ -245,24 +346,13 @@ select:focus { border-color: var(--accent); }
             <option value="avg">Avg score</option>
             <option value="best">Best score</option>
             <option value="games">Games played</option>
-            <option value="perfect">Perfect rounds</option>
+            <option value="perfect">Perfect guesses</option>
           </select>
         </div>
       </div>
       <div class="podium" id="podium"></div>
       <div class="divider"></div>
       <div class="leaderboard" id="leaderboard"></div>
-    </div>
-
-    <!-- Distribution -->
-    <div class="panel">
-      <div class="section-header">
-        <div class="panel-title" style="margin:0;">Score distribution</div>
-        <div class="filter-row">
-          <select id="dist-player" onchange="renderDistribution()"><option value="all">All players</option></select>
-        </div>
-      </div>
-      <div class="dist-grid" id="dist-grid"></div>
     </div>
 
     <!-- History -->
@@ -286,7 +376,125 @@ select:focus { border-color: var(--accent); }
 </div>
 
 <script>
-const WEIGHTS = [1, 1, 2, 3, 3];
+(function() {
+  const btn = document.getElementById('theme-toggle');
+  const icons = { light: '☀️', dark: '🌙', system: '💻' };
+
+  function currentMode() {
+    return document.documentElement.getAttribute('data-theme') || 'system';
+  }
+
+  function updateIcon() {
+    btn.textContent = icons[currentMode()];
+  }
+
+  btn.addEventListener('click', function() {
+    const order = ['system', 'light', 'dark'];
+    const next = order[(order.indexOf(currentMode()) + 1) % 3];
+    if (next === 'system') {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.removeItem('maptap-theme');
+    } else {
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('maptap-theme', next);
+    }
+    updateIcon();
+  });
+
+  updateIcon();
+})();
+
+(function() {
+  const canvas = document.getElementById('globe');
+  const ctx = canvas.getContext('2d');
+  const cssSize = 56;
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = cssSize * dpr;
+  canvas.height = cssSize * dpr;
+  ctx.scale(dpr, dpr);
+  const cx = cssSize / 2;
+  const cy = cssSize / 2;
+  const r = 24;
+  let rot = 0;
+
+  function isDark() {
+    const t = document.documentElement.getAttribute('data-theme');
+    if (t === 'light') return false;
+    if (t === 'dark') return true;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  function project(lat, lon) {
+    const la = lat * Math.PI / 180;
+    const lo = (lon + rot) * Math.PI / 180;
+    return {
+      x: cx + r * Math.cos(la) * Math.sin(lo),
+      y: cy - r * Math.sin(la),
+      z: r * Math.cos(la) * Math.cos(lo)
+    };
+  }
+
+  function drawGridLine(points) {
+    ctx.beginPath();
+    let pen = false;
+    for (const p of points) {
+      if (p.z > 0) {
+        if (!pen) { ctx.moveTo(p.x, p.y); pen = true; }
+        else ctx.lineTo(p.x, p.y);
+      } else {
+        pen = false;
+      }
+    }
+    ctx.stroke();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, cssSize, cssSize);
+    const dark = isDark();
+
+    const grad = ctx.createRadialGradient(cx - r * 0.3, cy - r * 0.3, r * 0.05, cx, cy, r);
+    if (dark) {
+      grad.addColorStop(0, '#3daa80');
+      grad.addColorStop(0.7, '#267a55');
+      grad.addColorStop(1, '#164a35');
+    } else {
+      grad.addColorStop(0, '#5bc49a');
+      grad.addColorStop(0.7, '#3a9e72');
+      grad.addColorStop(1, '#2a7a55');
+    }
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    ctx.strokeStyle = dark ? 'rgba(255,255,255,0.18)' : 'rgba(255,255,255,0.3)';
+    ctx.lineWidth = 0.6;
+
+    for (let lon = 0; lon < 360; lon += 30) {
+      const pts = [];
+      for (let lat = -90; lat <= 90; lat += 3) pts.push(project(lat, lon));
+      drawGridLine(pts);
+    }
+
+    for (let lat = -60; lat <= 60; lat += 30) {
+      const pts = [];
+      for (let lon = 0; lon < 360; lon += 3) pts.push(project(lat, lon));
+      drawGridLine(pts);
+    }
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.strokeStyle = dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    rot += 0.15;
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+})();
+
 let ALL_SCORES = [];
 
 function perfectRounds(score) {
@@ -322,9 +530,19 @@ function getPlayerStats(scores) {
   });
 }
 
+function toYMD(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
 function daysAgo(n) {
   const d = new Date(); d.setDate(d.getDate() - n);
-  return d.toISOString().slice(0, 10);
+  return toYMD(d);
+}
+
+function scoreYMD(s) {
+  if (!s.isoDate) return '';
+  const d = new Date(s.isoDate);
+  return isNaN(d) ? '' : toYMD(d);
 }
 
 async function loadData() {
@@ -356,65 +574,106 @@ function populateFilters() {
   const players = [...new Set(ALL_SCORES.map(s=>s.player))].sort();
   const opts = '<option value="all">All players</option>' + players.map(p=>`<option value="${p}">${p}</option>`).join('');
   document.getElementById('filter-player').innerHTML = opts;
-  document.getElementById('dist-player').innerHTML = opts;
 }
 
 function renderWinners() {
   const el = document.getElementById('winners-grid');
   if (!ALL_SCORES.length) { el.innerHTML=''; return; }
 
-  const today   = new Date().toISOString().slice(0,10);
-  const weekAgo = daysAgo(7);
+  const yesterday = daysAgo(1);
+  const weekAgo   = daysAgo(7);
 
-  // Daily: highest single score today
-  const todayScores = ALL_SCORES.filter(s => (s.isoDate||'').slice(0,10) === today);
+  const yestScores = ALL_SCORES.filter(s => scoreYMD(s) === yesterday);
   let daily = null;
-  if (todayScores.length) {
-    const b = todayScores.reduce((a,b) => b.score>a.score ? b : a);
-    daily = { name: b.player, value: b.score, sub: 'score today' };
+  if (yestScores.length) {
+    const b = yestScores.reduce((a,b) => b.score>a.score ? b : a);
+    daily = { name: b.player, value: b.score, sub: 'score' };
   }
 
-  // Weekly: best avg over last 7 days
-  const weekScores = ALL_SCORES.filter(s => (s.isoDate||'') >= weekAgo);
+  const weekScores = ALL_SCORES.filter(s => scoreYMD(s) >= weekAgo);
   let weekly = null;
   if (weekScores.length) {
-    const ws = getPlayerStats(weekScores).sort((a,b)=>b.avg-a.avg)[0];
-    weekly = { name: ws.player, value: Math.round(ws.avg), sub: `avg · ${ws.games} game${ws.games>1?'s':''} this week` };
+    const ws = getPlayerStats(weekScores).filter(p=>p.games>=2).sort((a,b)=>b.avg-a.avg)[0];
+    if (ws) weekly = { name: ws.player, value: Math.round(ws.avg), sub: `avg · ${ws.games} games` };
   }
 
-  // All-time: best avg (min 3 games)
-  const as = getPlayerStats(ALL_SCORES).filter(p=>p.games>=3).sort((a,b)=>b.avg-a.avg);
+  const as = getPlayerStats(ALL_SCORES).filter(p=>p.games>=7).sort((a,b)=>b.avg-a.avg);
   let alltime = null;
   if (as.length) {
-    alltime = { name: as[0].player, value: Math.round(as[0].avg), sub: `avg · ${as[0].games} games all time` };
+    alltime = { name: as[0].player, value: Math.round(as[0].avg), sub: `avg · ${as[0].games} games` };
   }
 
-  const card = (cls, period, trophy, w, empty) => w
+  const card = (cls, period, w, empty) => w
     ? `<div class="winner-card ${cls}">
         <div class="winner-period">${period}</div>
         <div class="winner-name">${w.name}</div>
         <div class="winner-meta">${w.value} · ${w.sub}</div>
-        <div class="winner-trophy">${trophy}</div>
        </div>`
     : `<div class="winner-card ${cls}">
         <div class="winner-period">${period}</div>
         <div class="winner-name" style="color:var(--muted);font-size:1rem;">${empty}</div>
-        <div class="winner-trophy">${trophy}</div>
        </div>`;
 
   el.innerHTML =
-    card('daily',   "Today's winner",   '🎯', daily,   'No games today') +
-    card('weekly',  'This week',         '📅', weekly,  'No games this week') +
-    card('alltime', 'All-time champion', '👑', alltime, 'Need 3+ games');
+    card('daily',   "Yesterday's winner", daily,   'No games yesterday') +
+    card('weekly',  "Last week's winner",  weekly,  'Need 2+ games') +
+    card('alltime', 'All-time champion',  alltime, 'Need 7+ games');
 }
 
 function renderStats() {
-  if (!ALL_SCORES.length) return;
-  const vals = ALL_SCORES.map(s=>s.score);
-  document.getElementById('stat-total').textContent   = ALL_SCORES.length;
-  document.getElementById('stat-avg').textContent     = Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
-  document.getElementById('stat-perfect').textContent = ALL_SCORES.reduce((n,s)=>n+perfectRounds(s),0);
-  document.getElementById('stat-high').textContent    = Math.max(...vals);
+  const el = document.getElementById('stat-grid');
+  if (!ALL_SCORES.length) { el.innerHTML = ''; return; }
+
+  const best = ALL_SCORES.reduce((a, b) => b.score > a.score ? b : a);
+
+  // Count daily wins per player (highest score each day)
+  const dayScores = {};
+  for (const s of ALL_SCORES) {
+    const d = scoreYMD(s);
+    if (!dayScores[d] || s.score > dayScores[d].score) {
+      dayScores[d] = s;
+    }
+  }
+  const winCounts = {};
+  for (const s of Object.values(dayScores)) {
+    winCounts[s.player] = (winCounts[s.player] || 0) + 1;
+  }
+  const totalDays = Object.keys(dayScores).length;
+  const winsLeader = Object.entries(winCounts).sort((a, b) => b[1] - a[1])[0];
+
+  const playerPerfects = {};
+  for (const s of ALL_SCORES) {
+    const pr = perfectRounds(s);
+    if (pr > 0) {
+      playerPerfects[s.player] = (playerPerfects[s.player] || 0) + pr;
+    }
+  }
+  const perfectLeader = Object.entries(playerPerfects).sort((a, b) => b[1] - a[1])[0];
+
+  el.innerHTML =
+    (winsLeader
+      ? `<div class="stat-card">
+          <div class="stat-label">Most daily wins</div>
+          <div class="stat-value accent">${winsLeader[1]}</div>
+          <div class="stat-name">${winsLeader[0]}</div>
+          <div class="stat-sub">${Math.round(winsLeader[1]/totalDays*100)}% win rate</div>
+        </div>`
+      : '') +
+    `<div class="stat-card">
+      <div class="stat-label">All-time best</div>
+      <div class="stat-value coral">${best.score}</div>
+      <div class="stat-name">${best.player}</div>
+      <div class="stat-sub">${best.date || best.isoDate}</div>
+    </div>` +
+    (perfectLeader
+      ? `<div class="stat-card">
+          <div class="stat-label">Most 100s</div>
+          <div class="stat-headline"><div class="stat-value gold">${perfectLeader[1]}</div><div class="stat-name">${perfectLeader[0]}</div></div>
+        </div>`
+      : `<div class="stat-card">
+          <div class="stat-label">Most 100s</div>
+          <div class="stat-value gold">0</div>
+        </div>`);
 }
 
 function renderPodium(stats) {
@@ -491,29 +750,6 @@ function renderLeaderboard() {
   el.innerHTML = header + rows.join('');
 }
 
-function renderDistribution() {
-  const el = document.getElementById('dist-grid');
-  const player = document.getElementById('dist-player').value;
-  const scores = player==='all' ? ALL_SCORES : ALL_SCORES.filter(s=>s.player===player);
-
-  const buckets = [
-    {label:'900–1000',min:900,max:1000},
-    {label:'800–899', min:800,max:899},
-    {label:'700–799', min:700,max:799},
-    {label:'600–699', min:600,max:699},
-    {label:'<600',    min:0,  max:599},
-  ];
-  const counts = buckets.map(b=>scores.filter(s=>s.score>=b.min&&s.score<=b.max).length);
-  const maxC   = Math.max(...counts,1);
-
-  el.innerHTML = buckets.map((b,i)=>`
-    <div class="dist-row">
-      <span>${b.label}</span>
-      <div class="dist-bar-bg"><div class="dist-bar-fill" style="width:${(counts[i]/maxC*100).toFixed(1)}%"></div></div>
-      <span style="text-align:right">${counts[i]}</span>
-    </div>`).join('');
-}
-
 function renderHistory() {
   const el = document.getElementById('history-container');
   const player = document.getElementById('filter-player').value;
@@ -521,8 +757,8 @@ function renderHistory() {
   let scores = player==='all' ? [...ALL_SCORES] : ALL_SCORES.filter(s=>s.player===player);
 
   scores.sort((a,b)=>{
-    if (sort==='newest')  return (b.isoDate||'').localeCompare(a.isoDate||'');
-    if (sort==='oldest')  return (a.isoDate||'').localeCompare(b.isoDate||'');
+    if (sort==='newest')  return scoreYMD(b).localeCompare(scoreYMD(a));
+    if (sort==='oldest')  return scoreYMD(a).localeCompare(scoreYMD(b));
     if (sort==='highest') return b.score-a.score;
     if (sort==='lowest')  return a.score-b.score;
     return 0;
@@ -532,9 +768,9 @@ function renderHistory() {
 
   const rows = scores.map(s => {
     const pr   = perfectRounds(s);
-    const pips = Array(pr).fill('<span class="perfect-pip" title="perfect round"></span>').join('');
+    const pips = Array(pr).fill('<span class="perfect-pip" title="perfect guess"></span>').join('');
     const rStr = s.rounds
-      ? s.rounds.map((r,i)=>`<span style="${r===100?'color:var(--gold)':''}">${r*WEIGHTS[i]}</span>`).join(' · ')
+      ? s.rounds.map(r=>`<span style="${r===100?'color:var(--gold)':''}">${r}</span>`).join(' · ')
       : '—';
     return `<tr>
       <td class="date-col">${s.date||s.isoDate||'—'}</td>
@@ -545,7 +781,7 @@ function renderHistory() {
   }).join('');
 
   el.innerHTML = `<table class="history-table">
-    <thead><tr><th>Date</th><th>Player</th><th>Rounds (weighted)</th><th>Score</th></tr></thead>
+    <thead><tr><th>Date</th><th>Player</th><th>Guesses</th><th>Score</th></tr></thead>
     <tbody>${rows}</tbody>
   </table>`;
 }
@@ -554,7 +790,6 @@ function renderAll() {
   renderWinners();
   renderStats();
   renderLeaderboard();
-  renderDistribution();
   renderHistory();
 }
 

@@ -1,3 +1,6 @@
 .DS_Store
 .idea/
 updates/
+.venv
+update.log
+.claude/
