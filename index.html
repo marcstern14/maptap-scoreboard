@@ -230,9 +230,10 @@ header {
 
 .leaderboard { display: flex; flex-direction: column; gap: 0.5rem; }
 
+.leaderboard-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .lb-row {
   display: grid;
-  grid-template-columns: 2rem 1fr 5rem 5rem 5rem 4rem 4rem;
+  grid-template-columns: 2rem minmax(120px, 1fr) 5rem 5rem 5rem 4rem 4rem;
   gap: 0.5rem;
   align-items: center;
   background: var(--surface);
@@ -241,9 +242,17 @@ header {
   padding: 0.75rem 1rem;
   font-size: 0.85rem;
   transition: border-color 0.2s;
+  min-width: 560px;
 }
-.leaderboard-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.lb-row { min-width: 560px; }
+.lb-row > :nth-child(1),
+.lb-row > :nth-child(2) {
+  position: sticky;
+  left: 0;
+  background: inherit;
+  z-index: 1;
+}
+.lb-row > :nth-child(1) { left: 0; }
+.lb-row > :nth-child(2) { left: 2.5rem; }
 .lb-row:hover { border-color: var(--border2); }
 .lb-row.header-row { background: transparent; border-color: transparent; padding-bottom: 0.2rem; }
 .lb-row.header-row span { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
@@ -269,6 +278,36 @@ header {
 .trend-up   { background: var(--trend-up-bg); color: var(--accent); }
 .trend-down { background: var(--trend-down-bg); color: var(--coral); }
 .trend-flat { background: var(--surface2); color: var(--muted); }
+
+.info-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--muted);
+  font-size: 0.65rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+  font-family: 'DM Mono', monospace;
+}
+.info-popover {
+  display: none;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  font-size: 0.78rem;
+  color: var(--text);
+  line-height: 1.6;
+  margin-top: 0.5rem;
+}
+.info-popover.open { display: block; }
 
 .history-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .history-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; min-width: 400px; }
@@ -360,7 +399,7 @@ select:focus { border-color: var(--accent); }
     <!-- Podium + Leaderboard -->
     <div class="panel">
       <div class="section-header">
-        <div class="panel-title" style="margin:0;">Leaderboard</div>
+        <div class="panel-title" style="margin:0;">Leaderboard<span class="info-btn" onclick="document.getElementById('trend-info').classList.toggle('open')">?</span></div>
         <div class="filter-row">
           <label style="font-size:0.75rem;color:var(--muted);">Sort by</label>
           <select id="lb-sort" onchange="renderLeaderboard()">
@@ -370,6 +409,11 @@ select:focus { border-color: var(--accent); }
             <option value="perfect">Perfect guesses</option>
           </select>
         </div>
+      </div>
+      <div class="info-popover" id="trend-info">
+        <strong>↑ hot</strong> — last 3 games avg is 25+ points above the previous 3<br>
+        <strong>↓ cold</strong> — last 3 games avg is 25+ points below the previous 3<br>
+        <strong>—</strong> — within 25 points
       </div>
       <div class="podium" id="podium"></div>
       <div class="divider"></div>
@@ -548,10 +592,9 @@ function getPlayerStats(scores) {
     const older  = byDate.slice(3, 6).map(s => s.score);
     const rAvg = recent.length ? recent.reduce((a,b)=>a+b,0)/recent.length : null;
     const oAvg = older.length  ? older.reduce((a,b)=>a+b,0)/older.length   : null;
-    let trend = 'flat';
+    let trendDelta = null;
     if (rAvg !== null && oAvg !== null) {
-      if (rAvg - oAvg > 10) trend = 'up';
-      else if (oAvg - rAvg > 10) trend = 'down';
+      trendDelta = Math.round(rAvg - oAvg);
     }
     return {
       player:  p.player,
@@ -560,7 +603,7 @@ function getPlayerStats(scores) {
       best:    Math.max(...vals),
       worst:   Math.min(...vals),
       perfect: p.scores.reduce((n,s) => n + perfectRounds(s), 0),
-      trend,
+      trendDelta,
     };
   });
 }
@@ -777,8 +820,6 @@ function renderLeaderboard() {
   });
 
   const maxAvg = Math.max(...stats.map(s=>s.avg), 1);
-  const tL = {up:'↑ hot',down:'↓ cold',flat:'→'};
-  const tC = {up:'trend-up',down:'trend-down',flat:'trend-flat'};
 
   const header = `<div class="lb-row header-row">
     <span></span><span>Player</span>
@@ -793,7 +834,12 @@ function renderLeaderboard() {
     const rc = i===0?'g':i===1?'s':i===2?'b':'';
     const rl = i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'';
     const pct = maxAvg>0 ? (p.avg/maxAvg*100).toFixed(1) : 0;
-    const trend = p.games>=4 ? `<span class="trend-chip ${tC[p.trend]}">${tL[p.trend]}</span>` : '';
+    let trend = '';
+    if (p.games >= 4 && p.trendDelta !== null) {
+      const cls = p.trendDelta > 25 ? 'trend-up' : p.trendDelta < -25 ? 'trend-down' : 'trend-flat';
+      const label = p.trendDelta > 25 ? '↑ hot' : p.trendDelta < -25 ? '↓ cold' : '—';
+      trend = `<span class="trend-chip ${cls}">${label}</span>`;
+    }
     return `<div class="lb-row ${rl}">
       <div class="rank-num ${rc}">${i+1}</div>
       <div>
