@@ -242,10 +242,8 @@ header {
   font-size: 0.85rem;
   transition: border-color 0.2s;
 }
-@media (max-width: 640px) {
-  .lb-row { grid-template-columns: 2rem 1fr 5rem 4rem; }
-  .lb-best, .lb-worst, .lb-games { display: none; }
-}
+.leaderboard-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.lb-row { min-width: 560px; }
 .lb-row:hover { border-color: var(--border2); }
 .lb-row.header-row { background: transparent; border-color: transparent; padding-bottom: 0.2rem; }
 .lb-row.header-row span { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
@@ -275,7 +273,7 @@ header {
 .history-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .history-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; min-width: 400px; }
 .history-table th { text-align: left; font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; padding: 0 0.75rem 0.5rem; font-weight: 400; }
-.history-table td { padding: 0.6rem 0.75rem; border-top: 1px solid var(--border); font-family: 'DM Mono', monospace; font-size: 0.8rem; }
+.history-table td { padding: 0.6rem 0.75rem; border-top: 1px solid var(--border); font-family: 'DM Mono', monospace; font-size: 0.8rem; white-space: nowrap; }
 .history-table tr:hover td { background: var(--surface2); }
 .history-table td.player-col { font-weight: 600; font-size: 0.85rem; }
 .history-table td.score-col { color: var(--accent); }
@@ -375,7 +373,7 @@ select:focus { border-color: var(--accent); }
       </div>
       <div class="podium" id="podium"></div>
       <div class="divider"></div>
-      <div class="leaderboard" id="leaderboard"></div>
+      <div class="leaderboard-wrap"><div class="leaderboard" id="leaderboard"></div></div>
     </div>
 
     <!-- History -->
@@ -665,6 +663,9 @@ function renderStats() {
   const el = document.getElementById('stat-grid');
   if (!ALL_SCORES.length) { el.innerHTML = ''; return; }
 
+  const vals = ALL_SCORES.map(s => s.score);
+  const familyAvg = Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
+
   const best = ALL_SCORES.reduce((a, b) => b.score > a.score ? b : a);
 
   // Count daily wins per player (highest score each day)
@@ -714,7 +715,11 @@ function renderStats() {
       : `<div class="stat-card">
           <div class="stat-label">Most Perfect guesses</div>
           <div class="stat-value gold">0</div>
-        </div>`);
+        </div>`) +
+    `<div class="stat-card">
+      <div class="stat-label">Family avg</div>
+      <div class="stat-value purple">${familyAvg}</div>
+    </div>`;
 }
 
 function renderPodium(stats, sortBy) {
