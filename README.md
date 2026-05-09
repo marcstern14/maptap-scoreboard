@@ -2,6 +2,8 @@
 
 Family scoreboard for [Maptap](https://maptap.gg), hosted on GitHub Pages.
 
+**Live site:** https://marcstern14.github.io/maptap-scoreboard/
+
 ## Setup
 
 ### 1. Grant Full Disk Access
