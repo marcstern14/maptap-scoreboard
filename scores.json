@@ -1,6 +1,6 @@
 {
-  "generated": "2026-05-09T09:58:15.235146",
-  "total": 132,
+  "generated": "2026-05-10T09:01:01.215161",
+  "total": 134,
   "scores": [
     {
       "id": 1123,
@@ -2113,6 +2113,38 @@
       "score": 799,
       "reported": 799,
       "perfect": 0
+    },
+    {
+      "id": 2464,
+      "player": "Marc",
+      "date": "May 9",
+      "isoDate": "May 9 2026",
+      "rounds": [
+        99,
+        96,
+        96,
+        79,
+        88
+      ],
+      "score": 888,
+      "reported": 888,
+      "perfect": 0
+    },
+    {
+      "id": 2481,
+      "player": "Andy",
+      "date": "May 9",
+      "isoDate": "May 9 2026",
+      "rounds": [
+        100,
+        99,
+        95,
+        100,
+        79
+      ],
+      "score": 926,
+      "reported": 926,
+      "perfect": 2
     }
   ]
 }
