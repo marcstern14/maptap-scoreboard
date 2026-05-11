@@ -723,13 +723,17 @@ function renderWinners() {
   let weekly = null;
   if (weekScores.length) {
     const ws = getPlayerStats(weekScores).filter(p=>p.games>=2).sort((a,b)=>b.avg-a.avg)[0];
-    if (ws) weekly = { name: ws.player, value: Math.round(ws.avg), sub: `avg · ${ws.games} games (min 2)` };
+    if (ws) {
+      const weekAvg = Math.round(weekScores.reduce((a,b) => a+b.score, 0) / weekScores.length);
+      weekly = { name: ws.player, value: `${Math.round(ws.avg)} avg`, sub: `${ws.games} games`, sub2: `${weekAvg} family avg` };
+    }
   }
 
   const as = getPlayerStats(ALL_SCORES).filter(p=>p.games>=10).sort((a,b)=>b.avg-a.avg);
   let alltime = null;
   if (as.length) {
-    alltime = { name: as[0].player, value: Math.round(as[0].avg), sub: `avg · ${as[0].games} games` };
+    const allAvg = Math.round(ALL_SCORES.reduce((a,b) => a+b.score, 0) / ALL_SCORES.length);
+    alltime = { name: as[0].player, value: `${Math.round(as[0].avg)} avg`, sub2: `${allAvg} family avg` };
   }
 
   const crownSvg = '<div class="crown"><svg viewBox="0 0 100 75"><polygon points="5,65 20,25 35,45 50,5 65,45 80,25 95,65"/><rect x="5" y="65" width="90" height="8" rx="2"/></svg></div>';
@@ -758,22 +762,45 @@ function renderStats() {
   const el = document.getElementById('stat-grid');
   if (!ALL_SCORES.length) { el.innerHTML = ''; return; }
 
-  const vals = ALL_SCORES.map(s => s.score);
-  const familyAvg = Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
-
   const best = ALL_SCORES.reduce((a, b) => b.score > a.score ? b : a);
+
+  const gameCounts = {};
+  for (const s of ALL_SCORES) gameCounts[s.player] = (gameCounts[s.player] || 0) + 1;
+  const gamesLeader = Object.entries(gameCounts).sort((a, b) => b[1] - a[1])[0];
 
   const { wins: winCounts, totalDays } = getDailyWins();
   const winsLeader = Object.entries(winCounts).sort((a, b) => b[1] - a[1])[0];
 
   const playerPerfects = {};
+  const playerRounds = {};
   for (const s of ALL_SCORES) {
+    const rLen = (s.rounds || []).length;
+    playerRounds[s.player] = (playerRounds[s.player] || 0) + rLen;
     const pr = perfectRounds(s);
     if (pr > 0) {
       playerPerfects[s.player] = (playerPerfects[s.player] || 0) + pr;
     }
   }
   const perfectLeader = Object.entries(playerPerfects).sort((a, b) => b[1] - a[1])[0];
+
+  const playerDays = {};
+  for (const s of ALL_SCORES) {
+    const d = scoreYMD(s);
+    if (!playerDays[s.player]) playerDays[s.player] = new Set();
+    playerDays[s.player].add(d);
+  }
+  function longestStreak(player) {
+    const days = [...playerDays[player]].sort();
+    let max = 1, cur = 1;
+    for (let i = 1; i < days.length; i++) {
+      const prev = new Date(days[i-1]);
+      const next = new Date(days[i]);
+      if (next - prev === 86400000) cur++;
+      else cur = 1;
+      if (cur > max) max = cur;
+    }
+    return days.length ? max : 0;
+  }
 
   el.innerHTML =
     (winsLeader
@@ -785,7 +812,7 @@ function renderStats() {
         </div>`
       : '') +
     `<div class="stat-card">
-      <div class="stat-label">All-time best</div>
+      <div class="stat-label">Score to beat</div>
       <div class="stat-value coral">${best.score}</div>
       <div class="stat-name">${best.player}</div>
       <div class="stat-sub">${best.date || best.isoDate}</div>
@@ -794,15 +821,20 @@ function renderStats() {
       ? `<div class="stat-card">
           <div class="stat-label">Most Perfect guesses</div>
           <div class="stat-headline"><div class="stat-value gold">${perfectLeader[1]}</div><div class="stat-name">${perfectLeader[0]}</div></div>
+          <div class="stat-sub">${playerRounds[perfectLeader[0]] ? Math.round(perfectLeader[1]/playerRounds[perfectLeader[0]]*100) : 0}% of their guesses</div>
         </div>`
       : `<div class="stat-card">
           <div class="stat-label">Most Perfect guesses</div>
           <div class="stat-value gold">0</div>
         </div>`) +
-    `<div class="stat-card">
-      <div class="stat-label">Family avg</div>
-      <div class="stat-value purple">${familyAvg}</div>
-    </div>`;
+    (gamesLeader
+      ? `<div class="stat-card">
+          <div class="stat-label">Most games played</div>
+          <div class="stat-value purple">${gamesLeader[1]}</div>
+          <div class="stat-name">${gamesLeader[0]}</div>
+          <div class="stat-sub">${longestStreak(gamesLeader[0])} day streak</div>
+        </div>`
+      : '');
 }
 
 function renderPodium(stats, sortBy) {
