@@ -233,7 +233,7 @@ header {
 .leaderboard-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .lb-row {
   display: grid;
-  grid-template-columns: 2rem minmax(80px, 1fr) 4rem 5rem 5rem 5rem 4rem 4rem;
+  grid-template-columns: 2rem minmax(80px, 1fr) 4rem 5rem 5rem 5rem 4rem 3.5rem 4rem;
   gap: 0.5rem;
   align-items: center;
   background: var(--surface);
@@ -242,7 +242,7 @@ header {
   padding: 0.75rem 1rem;
   font-size: 0.85rem;
   transition: border-color 0.2s;
-  min-width: 680px;
+  min-width: 720px;
 }
 .lb-row > :nth-child(1),
 .lb-row > :nth-child(2) {
@@ -431,6 +431,7 @@ select:focus { border-color: var(--accent); }
             <option value="avg">Avg score</option>
             <option value="best">Best score</option>
             <option value="games">Games played</option>
+            <option value="wins">Daily wins</option>
             <option value="perfect">Perfect guesses</option>
           </select>
         </div>
@@ -656,6 +657,17 @@ function scoreYMD(s) {
   return isNaN(d) ? '' : toYMD(d);
 }
 
+function getDailyWins() {
+  const dayBest = {};
+  for (const s of ALL_SCORES) {
+    const d = scoreYMD(s);
+    if (!dayBest[d] || s.score > dayBest[d].score) dayBest[d] = s;
+  }
+  const wins = {};
+  for (const s of Object.values(dayBest)) wins[s.player] = (wins[s.player] || 0) + 1;
+  return { wins, totalDays: Object.keys(dayBest).length };
+}
+
 async function loadData() {
   try {
     const res = await fetch('scores.json?v=' + Date.now());
@@ -692,7 +704,12 @@ function renderWinners() {
   if (!ALL_SCORES.length) { el.innerHTML=''; return; }
 
   const yesterday = daysAgo(1);
-  const weekAgo   = daysAgo(7);
+  const today = new Date();
+  const dow = (today.getDay() + 6) % 7; // 0=Mon … 6=Sun
+  const thisMonday = new Date(today);
+  thisMonday.setDate(today.getDate() - dow);
+  const lastWeekStart = toYMD(new Date(thisMonday.getFullYear(), thisMonday.getMonth(), thisMonday.getDate() - 7));
+  const lastWeekEnd   = toYMD(new Date(thisMonday.getFullYear(), thisMonday.getMonth(), thisMonday.getDate() - 1));
 
   const yestScores = ALL_SCORES.filter(s => scoreYMD(s) === yesterday);
   let daily = null;
@@ -701,7 +718,7 @@ function renderWinners() {
     daily = { name: b.player, value: b.score, sub: 'score' };
   }
 
-  const weekScores = ALL_SCORES.filter(s => scoreYMD(s) >= weekAgo);
+  const weekScores = ALL_SCORES.filter(s => { const d = scoreYMD(s); return d >= lastWeekStart && d <= lastWeekEnd; });
   let weekly = null;
   if (weekScores.length) {
     const ws = getPlayerStats(weekScores).filter(p=>p.games>=2).sort((a,b)=>b.avg-a.avg)[0];
@@ -744,19 +761,7 @@ function renderStats() {
 
   const best = ALL_SCORES.reduce((a, b) => b.score > a.score ? b : a);
 
-  // Count daily wins per player (highest score each day)
-  const dayScores = {};
-  for (const s of ALL_SCORES) {
-    const d = scoreYMD(s);
-    if (!dayScores[d] || s.score > dayScores[d].score) {
-      dayScores[d] = s;
-    }
-  }
-  const winCounts = {};
-  for (const s of Object.values(dayScores)) {
-    winCounts[s.player] = (winCounts[s.player] || 0) + 1;
-  }
-  const totalDays = Object.keys(dayScores).length;
+  const { wins: winCounts, totalDays } = getDailyWins();
   const winsLeader = Object.entries(winCounts).sort((a, b) => b[1] - a[1])[0];
 
   const playerPerfects = {};
@@ -804,15 +809,16 @@ function renderPodium(stats, sortBy) {
     avg:     (a,b) => b.avg-a.avg,
     best:    (a,b) => b.best-a.best,
     games:   (a,b) => b.games-a.games,
+    wins:    (a,b) => b.wins-a.wins,
     perfect: (a,b) => b.perfect-a.perfect,
   }[sortBy] || ((a,b) => b.avg-a.avg);
-  const labels = { avg:'avg', best:'best', games:'games', perfect:'Perfect guesses' };
+  const labels = { avg:'avg', best:'best', games:'games', wins:'wins', perfect:'Perfect guesses' };
   const label = labels[sortBy] || 'avg';
 
   const top3 = [...stats].sort(sortFn).slice(0,3);
   if (top3.length < 2) { el.innerHTML=''; return; }
 
-  const valFn = { avg: p=>Math.round(p.avg), best: p=>p.best, games: p=>p.games, perfect: p=>p.perfect }[sortBy] || (p=>Math.round(p.avg));
+  const valFn = { avg: p=>Math.round(p.avg), best: p=>p.best, games: p=>p.games, wins: p=>p.wins, perfect: p=>p.perfect }[sortBy] || (p=>Math.round(p.avg));
 
   // Visual order: 2nd | 1st | 3rd
   const slots   = top3.length >= 3 ? [top3[1], top3[0], top3[2]] : [null, top3[0], top3[1]];
@@ -839,7 +845,9 @@ function renderLeaderboard() {
   }
 
   const sortBy = document.getElementById('lb-sort').value;
+  const { wins: dailyWins } = getDailyWins();
   const allStats = getPlayerStats(ALL_SCORES);
+  for (const s of allStats) s.wins = dailyWins[s.player] || 0;
   const stats = allStats.filter(p => p.games >= 10);
   const unranked = allStats.filter(p => p.games < 10);
   renderPodium(stats, sortBy);
@@ -848,6 +856,7 @@ function renderLeaderboard() {
     if (sortBy==='avg')     return b.avg-a.avg;
     if (sortBy==='best')    return b.best-a.best;
     if (sortBy==='games')   return b.games-a.games;
+    if (sortBy==='wins')    return b.wins-a.wins;
     if (sortBy==='perfect') return b.perfect-a.perfect;
     return 0;
   });
@@ -861,6 +870,7 @@ function renderLeaderboard() {
     <span class="lb-best" style="text-align:right">Best</span>
     <span class="lb-best" style="text-align:right">Worst</span>
     <span class="lb-games" style="text-align:right">Games</span>
+    <span style="text-align:right">Wins</span>
     <span style="text-align:right">Perfect guesses</span>
   </div>`;
 
@@ -885,6 +895,7 @@ function renderLeaderboard() {
       <div class="lb-best-val lb-best">${p.best}</div>
       <div class="lb-best-val lb-worst">${p.worst}</div>
       <div class="lb-games-val lb-games">${p.games}</div>
+      <div class="lb-games-val" style="text-align:right">${p.wins>0?p.wins:'—'}</div>
       <div class="lb-perfect">${p.perfect>0?p.perfect:'—'}</div>
     </div>`;
   });
@@ -901,6 +912,7 @@ function renderLeaderboard() {
         <div class="lb-best-val lb-best">${p.best}</div>
         <div class="lb-best-val lb-worst">${p.worst}</div>
         <div class="lb-games-val lb-games">${p.games}</div>
+        <div class="lb-games-val" style="text-align:right">${p.wins>0?p.wins:'—'}</div>
         <div class="lb-perfect">${p.perfect>0?p.perfect:'—'}</div>
       </div>`).join('');
   }
