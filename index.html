@@ -715,7 +715,8 @@ function renderWinners() {
   let daily = null;
   if (yestScores.length) {
     const b = yestScores.reduce((a,b) => b.score>a.score ? b : a);
-    daily = { name: b.player, value: b.score, sub: 'score' };
+    const yestAvg = Math.round(yestScores.reduce((a,b) => a+b.score, 0) / yestScores.length);
+    daily = { name: b.player, value: b.score, sub2: `${yestScores.length} players · ${yestAvg} avg` };
   }
 
   const weekScores = ALL_SCORES.filter(s => { const d = scoreYMD(s); return d >= lastWeekStart && d <= lastWeekEnd; });
@@ -738,7 +739,8 @@ function renderWinners() {
         ${cls==='alltime' ? crownSvg : ''}
         <div class="winner-period">${period}</div>
         <div class="winner-name">${w.name}</div>
-        <div class="winner-meta">${w.value} · ${w.sub}</div>
+        <div class="winner-meta">${w.value}${w.sub ? ' · '+w.sub : ''}</div>
+        ${w.sub2 ? `<div class="winner-meta">${w.sub2}</div>` : ''}
        </div>`
     : `<div class="winner-card ${cls}">
         ${cls==='alltime' ? crownSvg : ''}
