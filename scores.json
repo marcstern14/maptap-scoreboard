@@ -1,6 +1,6 @@
 {
-  "generated": "2026-05-14T09:04:34.021541",
-  "total": 160,
+  "generated": "2026-05-14T09:49:06.820845",
+  "total": 162,
   "scores": [
     {
       "id": 1123,
@@ -2557,6 +2557,38 @@
         95,
         36,
         87
+      ],
+      "score": 750,
+      "reported": 750,
+      "perfect": 0
+    },
+    {
+      "id": 2919,
+      "player": "Dan",
+      "date": "May 14",
+      "isoDate": "May 14 2026",
+      "rounds": [
+        97,
+        93,
+        71,
+        70,
+        92
+      ],
+      "score": 818,
+      "reported": 818,
+      "perfect": 0
+    },
+    {
+      "id": 2926,
+      "player": "Katie",
+      "date": "May 14",
+      "isoDate": "May 14 2026",
+      "rounds": [
+        95,
+        95,
+        88,
+        36,
+        92
       ],
       "score": 750,
       "reported": 750,
