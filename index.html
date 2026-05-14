@@ -652,8 +652,12 @@ function daysAgo(n) {
   return toYMD(d);
 }
 
+const MONTH_MAP = {Jan:'01',Feb:'02',Mar:'03',Apr:'04',May:'05',Jun:'06',
+                   Jul:'07',Aug:'08',Sep:'09',Oct:'10',Nov:'11',Dec:'12'};
 function scoreYMD(s) {
   if (!s.isoDate) return '';
+  const p = s.isoDate.split(' ');
+  if (p.length === 3 && MONTH_MAP[p[0]]) return `${p[2]}-${MONTH_MAP[p[0]]}-${p[1].padStart(2,'0')}`;
   const d = new Date(s.isoDate);
   return isNaN(d) ? '' : toYMD(d);
 }
