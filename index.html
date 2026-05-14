@@ -607,6 +607,7 @@ select:focus { border-color: var(--accent); }
 })();
 
 let ALL_SCORES = [];
+let DATA_AS_OF = null;
 let historyPage = 0;
 
 function perfectRounds(score) {
@@ -676,6 +677,7 @@ async function loadData() {
     ALL_SCORES = data.scores || [];
 
     const gen = data.generated ? new Date(data.generated) : null;
+    DATA_AS_OF = gen || new Date();
     if (gen) {
       document.getElementById('generated-at').textContent =
         'Updated ' + gen.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) +
@@ -703,11 +705,13 @@ function renderWinners() {
   const el = document.getElementById('winners-grid');
   if (!ALL_SCORES.length) { el.innerHTML=''; return; }
 
-  const yesterday = daysAgo(1);
-  const today = new Date();
-  const dow = (today.getDay() + 6) % 7; // 0=Mon … 6=Sun
-  const thisMonday = new Date(today);
-  thisMonday.setDate(today.getDate() - dow);
+  const ref = DATA_AS_OF || new Date();
+  const refYesterday = new Date(ref);
+  refYesterday.setDate(refYesterday.getDate() - 1);
+  const yesterday = toYMD(refYesterday);
+  const dow = (ref.getDay() + 6) % 7; // 0=Mon … 6=Sun
+  const thisMonday = new Date(ref);
+  thisMonday.setDate(ref.getDate() - dow);
   const lastWeekStart = toYMD(new Date(thisMonday.getFullYear(), thisMonday.getMonth(), thisMonday.getDate() - 7));
   const lastWeekEnd   = toYMD(new Date(thisMonday.getFullYear(), thisMonday.getMonth(), thisMonday.getDate() - 1));
 
