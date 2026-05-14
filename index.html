@@ -179,6 +179,7 @@ header {
 .winner-card.daily   { border-color: var(--accent2-edge); background: var(--accent2-fill); }
 .winner-card.weekly  { border-color: var(--accent-edge);  background: var(--accent-fill); }
 .winner-card.alltime { border-color: var(--gold-edge);    background: var(--gold-fill); position: relative; }
+.winner-card.complainer { border-color: #e57373; background: rgba(229,115,115,0.08); }
 .crown {
   position: absolute;
   top: -14px;
@@ -191,6 +192,7 @@ header {
 .winner-card.daily   .winner-period { color: var(--accent2); }
 .winner-card.weekly  .winner-period { color: var(--accent); }
 .winner-card.alltime .winner-period { color: var(--gold); }
+.winner-card.complainer .winner-period { color: #e57373; }
 
 .winner-name { font-size: 1.4rem; font-weight: 700; line-height: 1.1; margin-bottom: 0.25rem; }
 .winner-meta { font-size: 0.75rem; color: var(--muted); font-family: 'DM Mono', monospace; }
@@ -432,7 +434,7 @@ select:focus { border-color: var(--accent); }
             <option value="best">Best score</option>
             <option value="games">Games played</option>
             <option value="wins">Daily wins</option>
-            <option value="perfect">Perfect guesses</option>
+            <option value="perfect">100s</option>
           </select>
         </div>
       </div>
@@ -763,7 +765,13 @@ function renderWinners() {
   el.innerHTML =
     card('daily',   "Yesterday's winner", daily,   'No games yesterday') +
     card('weekly',  "Last week's winner",  weekly,  'Need 2+ games') +
-    card('alltime', 'All-time champion',  alltime, 'Need 10+ games');
+    card('alltime', 'All-time champion',  alltime, 'Need 10+ games') +
+    `<div class="winner-card complainer">
+      <div class="winner-period">Biggest Complainer</div>
+      <div class="winner-name">Ryan</div>
+      <div class="winner-meta">😤 forever</div>
+      <div class="winner-meta">some things never change</div>
+     </div>`;
 }
 
 function renderStats() {
@@ -827,12 +835,12 @@ function renderStats() {
     </div>` +
     (perfectLeader
       ? `<div class="stat-card">
-          <div class="stat-label">Most Perfect guesses</div>
+          <div class="stat-label">Most 100s</div>
           <div class="stat-headline"><div class="stat-value gold">${perfectLeader[1]}</div><div class="stat-name">${perfectLeader[0]}</div></div>
           <div class="stat-sub">${playerRounds[perfectLeader[0]] ? Math.round(perfectLeader[1]/playerRounds[perfectLeader[0]]*100) : 0}% of their guesses</div>
         </div>`
       : `<div class="stat-card">
-          <div class="stat-label">Most Perfect guesses</div>
+          <div class="stat-label">Most 100s</div>
           <div class="stat-value gold">0</div>
         </div>`) +
     (gamesLeader
@@ -842,7 +850,8 @@ function renderStats() {
           <div class="stat-name">${gamesLeader[0]}</div>
           <div class="stat-sub">${longestStreak(gamesLeader[0])} day streak</div>
         </div>`
-      : '');
+      : '') +
+    '';
 }
 
 function renderPodium(stats, sortBy) {
@@ -854,7 +863,7 @@ function renderPodium(stats, sortBy) {
     wins:    (a,b) => b.wins-a.wins,
     perfect: (a,b) => b.perfect-a.perfect,
   }[sortBy] || ((a,b) => b.avg-a.avg);
-  const labels = { avg:'avg', best:'best', games:'games', wins:'wins', perfect:'Perfect guesses' };
+  const labels = { avg:'avg', best:'best', games:'games', wins:'wins', perfect:'100s' };
   const label = labels[sortBy] || 'avg';
 
   const top3 = [...stats].sort(sortFn).slice(0,3);
@@ -913,7 +922,7 @@ function renderLeaderboard() {
     <span class="lb-best" style="text-align:right">Worst</span>
     <span class="lb-games" style="text-align:right">Games</span>
     <span style="text-align:right">Wins</span>
-    <span style="text-align:right">Perfect guesses</span>
+    <span style="text-align:right">100s</span>
   </div>`;
 
   const rows = stats.map((p,i) => {
