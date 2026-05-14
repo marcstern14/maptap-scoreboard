@@ -1,6 +1,6 @@
 {
-  "generated": "2026-05-14T10:46:01.378114",
-  "total": 172,
+  "generated": "2026-05-14T10:48:48.109744",
+  "total": 168,
   "scores": [
     {
       "id": 1123,
@@ -2195,22 +2195,6 @@
       "perfect": 2
     },
     {
-      "id": 2486,
-      "player": "Karen",
-      "date": "May 9",
-      "isoDate": "May 9 2026",
-      "rounds": [
-        96,
-        98,
-        46,
-        73,
-        60
-      ],
-      "score": 685,
-      "reported": 685,
-      "perfect": 0
-    },
-    {
       "id": 2497,
       "player": "Ryan",
       "date": "May 10",
@@ -2336,22 +2320,6 @@
       ],
       "score": 627,
       "reported": 627,
-      "perfect": 0
-    },
-    {
-      "id": 2535,
-      "player": "Karen",
-      "date": "May 10",
-      "isoDate": "May 10 2026",
-      "rounds": [
-        79,
-        64,
-        37,
-        12,
-        0
-      ],
-      "score": 253,
-      "reported": 253,
       "perfect": 0
     },
     {
@@ -2483,22 +2451,6 @@
       "perfect": 0
     },
     {
-      "id": 2616,
-      "player": "Karen",
-      "date": "May 11",
-      "isoDate": "May 11 2026",
-      "rounds": [
-        96,
-        95,
-        95,
-        14,
-        80
-      ],
-      "score": 663,
-      "reported": 663,
-      "perfect": 0
-    },
-    {
       "id": 2621,
       "player": "Jill",
       "date": "May 12",
@@ -2608,22 +2560,6 @@
       ],
       "score": 889,
       "reported": 889,
-      "perfect": 0
-    },
-    {
-      "id": 2794,
-      "player": "Karen",
-      "date": "May 12",
-      "isoDate": "May 12 2026",
-      "rounds": [
-        90,
-        90,
-        86,
-        72,
-        64
-      ],
-      "score": 760,
-      "reported": 760,
       "perfect": 0
     },
     {
