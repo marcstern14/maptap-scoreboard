@@ -179,7 +179,6 @@ header {
 .winner-card.daily   { border-color: var(--accent2-edge); background: var(--accent2-fill); }
 .winner-card.weekly  { border-color: var(--accent-edge);  background: var(--accent-fill); }
 .winner-card.alltime { border-color: var(--gold-edge);    background: var(--gold-fill); position: relative; }
-.winner-card.complainer { border-color: #e57373; background: rgba(229,115,115,0.08); }
 .crown {
   position: absolute;
   top: -14px;
@@ -192,7 +191,6 @@ header {
 .winner-card.daily   .winner-period { color: var(--accent2); }
 .winner-card.weekly  .winner-period { color: var(--accent); }
 .winner-card.alltime .winner-period { color: var(--gold); }
-.winner-card.complainer .winner-period { color: #e57373; }
 
 .winner-name { font-size: 1.4rem; font-weight: 700; line-height: 1.1; margin-bottom: 0.25rem; }
 .winner-meta { font-size: 0.75rem; color: var(--muted); font-family: 'DM Mono', monospace; }
@@ -365,6 +363,15 @@ select:focus { border-color: var(--accent); }
 .error-banner { background: var(--coral-fill); border: 1px solid var(--coral-edge); border-radius: var(--radius-sm); padding: 1rem 1.25rem; color: var(--coral); font-size: 0.85rem; line-height: 1.6; display: none; }
 .error-banner code { font-family: 'DM Mono', monospace; font-size: 0.8rem; background: var(--coral-fill); padding: 0.1rem 0.35rem; border-radius: 4px; }
 
+.toggle-group { display: inline-flex; border: 1px solid var(--border2); border-radius: var(--radius-sm); overflow: hidden; }
+.toggle-btn {
+  background: var(--surface2); border: none; color: var(--muted); font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.75rem; padding: 0.3rem 0.7rem; cursor: pointer; transition: background 0.2s, color 0.2s;
+}
+.toggle-btn:not(:last-child) { border-right: 1px solid var(--border2); }
+.toggle-btn.active { background: var(--accent); color: var(--bg); font-weight: 600; }
+.toggle-btn:hover:not(.active) { color: var(--text); }
+
 .theme-toggle {
   background: var(--surface2);
   border: 1px solid var(--border2);
@@ -413,7 +420,7 @@ select:focus { border-color: var(--accent); }
 
     <!-- Winner banners -->
     <div>
-      <div class="panel-title">Current champions</div>
+      <div class="panel-title">Current leaders</div>
       <div class="winners-grid" id="winners-grid"></div>
     </div>
 
@@ -428,6 +435,10 @@ select:focus { border-color: var(--accent); }
       <div class="section-header">
         <div class="panel-title" style="margin:0;">Leaderboard<span class="info-btn" onclick="document.getElementById('trend-info').classList.toggle('open')">?</span></div>
         <div class="filter-row">
+          <div class="toggle-group" id="lb-range-toggle">
+            <button class="toggle-btn active" data-value="alltime" onclick="setLbRange(this)">All-time</button>
+            <button class="toggle-btn" data-value="month" onclick="setLbRange(this)">This month</button>
+          </div>
           <label style="font-size:0.75rem;color:var(--muted);">Sort by</label>
           <select id="lb-sort" onchange="renderLeaderboard()">
             <option value="avg">Avg score</option>
@@ -611,6 +622,24 @@ select:focus { border-color: var(--accent); }
 let ALL_SCORES = [];
 let DATA_AS_OF = null;
 let historyPage = 0;
+let lbRange = 'alltime';
+
+function setLbRange(btn) {
+  lbRange = btn.dataset.value;
+  document.querySelectorAll('#lb-range-toggle .toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLeaderboard();
+}
+
+function getLbScores() {
+  if (lbRange === 'month') {
+    const ref = DATA_AS_OF || new Date();
+    const start = `${ref.getFullYear()}-${String(ref.getMonth()+1).padStart(2,'0')}-01`;
+    const end = toYMD(ref);
+    return ALL_SCORES.filter(s => { const d = scoreYMD(s); return d >= start && d <= end; });
+  }
+  return ALL_SCORES;
+}
 
 function perfectRounds(score) {
   return (score.rounds || []).filter(r => r === 100).length;
@@ -729,13 +758,37 @@ function renderWinners() {
     daily = { name: b.player, value: b.score, sub2: `${yestScores.length} players · ${yestAvg} avg` };
   }
 
-  const weekScores = ALL_SCORES.filter(s => { const d = scoreYMD(s); return d >= lastWeekStart && d <= lastWeekEnd; });
-  let weekly = null;
-  if (weekScores.length) {
-    const ws = getPlayerStats(weekScores).filter(p=>p.games>=2).sort((a,b)=>b.avg-a.avg)[0];
-    if (ws) {
-      const weekAvg = Math.round(weekScores.reduce((a,b) => a+b.score, 0) / weekScores.length);
-      weekly = { name: ws.player, value: `${Math.round(ws.avg)} avg`, sub: `${ws.games} games`, sub2: `${weekAvg} family avg` };
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const curYear = ref.getFullYear(), curMonth = ref.getMonth();
+  const dayOfMonth = ref.getDate();
+  const isFirstWeek = dayOfMonth <= 7;
+
+  let monthly = null, monthlyLabel = '';
+  if (isFirstWeek) {
+    const prevMonth = curMonth === 0 ? 11 : curMonth - 1;
+    const prevYear  = curMonth === 0 ? curYear - 1 : curYear;
+    const prevStart = `${prevYear}-${String(prevMonth+1).padStart(2,'0')}-01`;
+    const prevEnd   = `${prevYear}-${String(prevMonth+1).padStart(2,'0')}-31`;
+    const prevScores = ALL_SCORES.filter(s => { const d = scoreYMD(s); return d >= prevStart && d <= prevEnd; });
+    monthlyLabel = `${monthNames[prevMonth]} winner`;
+    if (prevScores.length) {
+      const ps = getPlayerStats(prevScores).filter(p=>p.games>=2).sort((a,b)=>b.avg-a.avg)[0];
+      if (ps) {
+        const prevAvg = Math.round(prevScores.reduce((a,b) => a+b.score, 0) / prevScores.length);
+        monthly = { name: ps.player, value: `${Math.round(ps.avg)} avg`, sub: `${ps.games} games`, sub2: `${prevAvg} family avg` };
+      }
+    }
+  } else {
+    const curStart = `${curYear}-${String(curMonth+1).padStart(2,'0')}-01`;
+    const curEnd   = toYMD(ref);
+    const curScores = ALL_SCORES.filter(s => { const d = scoreYMD(s); return d >= curStart && d <= curEnd; });
+    monthlyLabel = `${monthNames[curMonth]} leader`;
+    if (curScores.length) {
+      const cs = getPlayerStats(curScores).filter(p=>p.games>=2).sort((a,b)=>b.avg-a.avg)[0];
+      if (cs) {
+        const curAvg = Math.round(curScores.reduce((a,b) => a+b.score, 0) / curScores.length);
+        monthly = { name: cs.player, value: `${Math.round(cs.avg)} avg`, sub: `${cs.games} games`, sub2: `${curAvg} family avg` };
+      }
     }
   }
 
@@ -764,14 +817,8 @@ function renderWinners() {
 
   el.innerHTML =
     card('daily',   "Yesterday's winner", daily,   'No games yesterday') +
-    card('weekly',  "Last week's winner",  weekly,  'Need 2+ games') +
-    card('alltime', 'All-time champion',  alltime, 'Need 10+ games') +
-    `<div class="winner-card complainer">
-      <div class="winner-period">Biggest Complainer</div>
-      <div class="winner-name">Ryan</div>
-      <div class="winner-meta">😤 forever</div>
-      <div class="winner-meta">some things never change</div>
-     </div>`;
+    card('weekly',  monthlyLabel,  monthly,  'Need 2+ games') +
+    card('alltime', 'All-time leader',  alltime, 'Need 10+ games');
 }
 
 function renderStats() {
@@ -780,43 +827,30 @@ function renderStats() {
 
   const best = ALL_SCORES.reduce((a, b) => b.score > a.score ? b : a);
 
-  const gameCounts = {};
-  for (const s of ALL_SCORES) gameCounts[s.player] = (gameCounts[s.player] || 0) + 1;
-  const gamesLeader = Object.entries(gameCounts).sort((a, b) => b[1] - a[1])[0];
-
   const { wins: winCounts, totalDays } = getDailyWins();
   const winsLeader = Object.entries(winCounts).sort((a, b) => b[1] - a[1])[0];
 
   const playerPerfects = {};
   const playerRounds = {};
+  const playerR5 = {};
   for (const s of ALL_SCORES) {
-    const rLen = (s.rounds || []).length;
+    const rounds = s.rounds || [];
+    const rLen = rounds.length;
     playerRounds[s.player] = (playerRounds[s.player] || 0) + rLen;
     const pr = perfectRounds(s);
     if (pr > 0) {
       playerPerfects[s.player] = (playerPerfects[s.player] || 0) + pr;
     }
+    if (rounds.length >= 5) {
+      if (!playerR5[s.player]) playerR5[s.player] = [];
+      playerR5[s.player].push(rounds[4]);
+    }
   }
   const perfectLeader = Object.entries(playerPerfects).sort((a, b) => b[1] - a[1])[0];
-
-  const playerDays = {};
-  for (const s of ALL_SCORES) {
-    const d = scoreYMD(s);
-    if (!playerDays[s.player]) playerDays[s.player] = new Set();
-    playerDays[s.player].add(d);
-  }
-  function longestStreak(player) {
-    const days = [...playerDays[player]].sort();
-    let max = 1, cur = 1;
-    for (let i = 1; i < days.length; i++) {
-      const prev = new Date(days[i-1]);
-      const next = new Date(days[i]);
-      if (next - prev === 86400000) cur++;
-      else cur = 1;
-      if (cur > max) max = cur;
-    }
-    return days.length ? max : 0;
-  }
+  const clutchEntries = Object.entries(playerR5)
+    .filter(([,v]) => v.length >= 3)
+    .map(([p,v]) => [p, Math.round(v.reduce((a,b)=>a+b,0)/v.length)]);
+  const clutchLeader = clutchEntries.sort((a, b) => b[1] - a[1])[0];
 
   el.innerHTML =
     (winsLeader
@@ -843,15 +877,14 @@ function renderStats() {
           <div class="stat-label">Most 100s</div>
           <div class="stat-value gold">0</div>
         </div>`) +
-    (gamesLeader
+    (clutchLeader
       ? `<div class="stat-card">
-          <div class="stat-label">Most games played</div>
-          <div class="stat-value purple">${gamesLeader[1]}</div>
-          <div class="stat-name">${gamesLeader[0]}</div>
-          <div class="stat-sub">${longestStreak(gamesLeader[0])} day streak</div>
+          <div class="stat-label">Most clutch</div>
+          <div class="stat-value purple">${clutchLeader[1]}</div>
+          <div class="stat-name">${clutchLeader[0]}</div>
+          <div class="stat-sub">avg round 5 score</div>
         </div>`
-      : '') +
-    '';
+      : '');
 }
 
 function renderPodium(stats, sortBy) {
@@ -889,18 +922,26 @@ function renderPodium(stats, sortBy) {
 
 function renderLeaderboard() {
   const el = document.getElementById('leaderboard');
-  if (!ALL_SCORES.length) {
+  const lbScores = getLbScores();
+  if (!lbScores.length) {
     el.innerHTML='<div class="empty"><strong>No scores yet</strong></div>';
     document.getElementById('podium').innerHTML='';
     return;
   }
 
   const sortBy = document.getElementById('lb-sort').value;
-  const { wins: dailyWins } = getDailyWins();
-  const allStats = getPlayerStats(ALL_SCORES);
+  const minGames = lbRange === 'month' ? 3 : 10;
+  const dayBestLb = {};
+  for (const s of lbScores) {
+    const d = scoreYMD(s);
+    if (!dayBestLb[d] || s.score > dayBestLb[d].score) dayBestLb[d] = s;
+  }
+  const dailyWins = {};
+  for (const s of Object.values(dayBestLb)) dailyWins[s.player] = (dailyWins[s.player] || 0) + 1;
+  const allStats = getPlayerStats(lbScores);
   for (const s of allStats) s.wins = dailyWins[s.player] || 0;
-  const stats = allStats.filter(p => p.games >= 10);
-  const unranked = allStats.filter(p => p.games < 10);
+  const stats = allStats.filter(p => p.games >= minGames);
+  const unranked = allStats.filter(p => p.games < minGames);
   renderPodium(stats, sortBy);
 
   stats.sort((a,b) => {
@@ -939,7 +980,6 @@ function renderLeaderboard() {
       <div class="rank-num ${rc}">${i+1}</div>
       <div>
         <div class="player-name">${p.player}</div>
-        <div class="mini-bar"><div class="mini-bar-fill" style="width:${pct}%"></div></div>
       </div>
       <div class="lb-trend">${trend}</div>
       <div class="lb-avg">${Math.round(p.avg)}</div>
@@ -954,7 +994,7 @@ function renderLeaderboard() {
   let unrankedHtml = '';
   if (unranked.length) {
     unrankedHtml = '<div class="divider"></div>' +
-      '<div class="panel-title" style="margin-top:0.5rem;">Too early to rank · need 10 games</div>' +
+      `<div class="panel-title" style="margin-top:0.5rem;">Too early to rank · need ${minGames} games</div>` +
       unranked.map(p => `<div class="lb-row">
         <div class="rank-num">—</div>
         <div><div class="player-name">${p.player}</div></div>
