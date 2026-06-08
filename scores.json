@@ -1,6 +1,6 @@
 {
-  "generated": "2026-06-07T00:18:33.748009",
-  "total": 351,
+  "generated": "2026-06-08T04:51:46.986329",
+  "total": 358,
   "scores": [
     {
       "id": 1123,
@@ -5617,6 +5617,118 @@
       "score": 926,
       "reported": 926,
       "perfect": 1
+    },
+    {
+      "id": 4912,
+      "player": "Dan",
+      "date": "June 7",
+      "isoDate": "Jun 7 2026",
+      "rounds": [
+        99,
+        95,
+        93,
+        97,
+        35
+      ],
+      "score": 776,
+      "reported": 776,
+      "perfect": 0
+    },
+    {
+      "id": 4913,
+      "player": "Jill",
+      "date": "June 7",
+      "isoDate": "Jun 7 2026",
+      "rounds": [
+        91,
+        95,
+        82,
+        92,
+        9
+      ],
+      "score": 653,
+      "reported": 653,
+      "perfect": 0
+    },
+    {
+      "id": 4914,
+      "player": "Andy",
+      "date": "June 7",
+      "isoDate": "Jun 7 2026",
+      "rounds": [
+        99,
+        98,
+        82,
+        86,
+        69
+      ],
+      "score": 826,
+      "reported": 826,
+      "perfect": 0
+    },
+    {
+      "id": 4920,
+      "player": "Katie",
+      "date": "June 7",
+      "isoDate": "Jun 7 2026",
+      "rounds": [
+        92,
+        99,
+        75,
+        88,
+        9
+      ],
+      "score": 632,
+      "reported": 632,
+      "perfect": 0
+    },
+    {
+      "id": 4921,
+      "player": "Caitlin",
+      "date": "June 7",
+      "isoDate": "Jun 7 2026",
+      "rounds": [
+        95,
+        95,
+        87,
+        84,
+        9
+      ],
+      "score": 643,
+      "reported": 643,
+      "perfect": 0
+    },
+    {
+      "id": 4922,
+      "player": "Marc",
+      "date": "June 7",
+      "isoDate": "Jun 7 2026",
+      "rounds": [
+        95,
+        95,
+        86,
+        88,
+        10
+      ],
+      "score": 656,
+      "reported": 656,
+      "perfect": 0
+    },
+    {
+      "id": 4930,
+      "player": "Ryan",
+      "date": "June 7",
+      "isoDate": "Jun 7 2026",
+      "rounds": [
+        95,
+        98,
+        91,
+        82,
+        8
+      ],
+      "score": 645,
+      "reported": 645,
+      "perfect": 0
     }
   ]
 }
