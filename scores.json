@@ -1,6 +1,6 @@
 {
-  "generated": "2026-06-10T00:02:40.965890",
-  "total": 371,
+  "generated": "2026-06-11T07:52:00.038360",
+  "total": 378,
   "scores": [
     {
       "id": 1123,
@@ -5937,6 +5937,118 @@
       "score": 920,
       "reported": 920,
       "perfect": 1
+    },
+    {
+      "id": 5062,
+      "player": "Dan",
+      "date": "June 10",
+      "isoDate": "Jun 10 2026",
+      "rounds": [
+        99,
+        94,
+        82,
+        92,
+        89
+      ],
+      "score": 900,
+      "reported": 900,
+      "perfect": 0
+    },
+    {
+      "id": 5063,
+      "player": "Marc",
+      "date": "June 10",
+      "isoDate": "Jun 10 2026",
+      "rounds": [
+        97,
+        97,
+        80,
+        90,
+        89
+      ],
+      "score": 891,
+      "reported": 891,
+      "perfect": 0
+    },
+    {
+      "id": 5064,
+      "player": "Caitlin",
+      "date": "June 10",
+      "isoDate": "Jun 10 2026",
+      "rounds": [
+        100,
+        99,
+        78,
+        80,
+        93
+      ],
+      "score": 874,
+      "reported": 874,
+      "perfect": 1
+    },
+    {
+      "id": 5068,
+      "player": "Andy",
+      "date": "June 10",
+      "isoDate": "Jun 10 2026",
+      "rounds": [
+        99,
+        94,
+        93,
+        100,
+        94
+      ],
+      "score": 961,
+      "reported": 961,
+      "perfect": 1
+    },
+    {
+      "id": 5070,
+      "player": "Karen",
+      "date": "June 10",
+      "isoDate": "Jun 10 2026",
+      "rounds": [
+        97,
+        95,
+        68,
+        95,
+        95
+      ],
+      "score": 898,
+      "reported": 898,
+      "perfect": 0
+    },
+    {
+      "id": 5096,
+      "player": "Ryan",
+      "date": "June 10",
+      "isoDate": "Jun 10 2026",
+      "rounds": [
+        99,
+        97,
+        73,
+        100,
+        91
+      ],
+      "score": 915,
+      "reported": 915,
+      "perfect": 1
+    },
+    {
+      "id": 5097,
+      "player": "Katie",
+      "date": "June 10",
+      "isoDate": "Jun 10 2026",
+      "rounds": [
+        96,
+        98,
+        93,
+        86,
+        92
+      ],
+      "score": 914,
+      "reported": 914,
+      "perfect": 0
     }
   ]
 }
