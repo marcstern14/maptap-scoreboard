@@ -1,6 +1,6 @@
 {
-  "generated": "2026-06-17T09:30:05.251943",
-  "total": 417,
+  "generated": "2026-06-18T08:33:45.717042",
+  "total": 420,
   "scores": [
     {
       "id": 1123,
@@ -6672,6 +6672,54 @@
       ],
       "score": 896,
       "reported": 896,
+      "perfect": 0
+    },
+    {
+      "id": 5515,
+      "player": "Dan",
+      "date": "June 17",
+      "isoDate": "Jun 17 2026",
+      "rounds": [
+        96,
+        95,
+        95,
+        95,
+        95
+      ],
+      "score": 951,
+      "reported": 951,
+      "perfect": 0
+    },
+    {
+      "id": 5517,
+      "player": "Marc",
+      "date": "June 17",
+      "isoDate": "Jun 17 2026",
+      "rounds": [
+        96,
+        95,
+        90,
+        94,
+        95
+      ],
+      "score": 938,
+      "reported": 938,
+      "perfect": 0
+    },
+    {
+      "id": 5521,
+      "player": "Karen",
+      "date": "June 17",
+      "isoDate": "Jun 17 2026",
+      "rounds": [
+        97,
+        95,
+        95,
+        96,
+        93
+      ],
+      "score": 949,
+      "reported": 949,
       "perfect": 0
     }
   ]
