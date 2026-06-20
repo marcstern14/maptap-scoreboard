@@ -1,6 +1,6 @@
 {
-  "generated": "2026-06-19T02:30:02.931377",
-  "total": 427,
+  "generated": "2026-06-20T07:32:03.626460",
+  "total": 435,
   "scores": [
     {
       "id": 1123,
@@ -6832,6 +6832,134 @@
       ],
       "score": 869,
       "reported": 869,
+      "perfect": 0
+    },
+    {
+      "id": 5586,
+      "player": "Jill",
+      "date": "June 19",
+      "isoDate": "Jun 19 2026",
+      "rounds": [
+        90,
+        95,
+        96,
+        95,
+        86
+      ],
+      "score": 920,
+      "reported": 920,
+      "perfect": 0
+    },
+    {
+      "id": 5587,
+      "player": "Marc",
+      "date": "June 19",
+      "isoDate": "Jun 19 2026",
+      "rounds": [
+        95,
+        96,
+        95,
+        87,
+        95
+      ],
+      "score": 927,
+      "reported": 927,
+      "perfect": 0
+    },
+    {
+      "id": 5588,
+      "player": "Caitlin",
+      "date": "June 19",
+      "isoDate": "Jun 19 2026",
+      "rounds": [
+        94,
+        91,
+        98,
+        95,
+        88
+      ],
+      "score": 930,
+      "reported": 930,
+      "perfect": 0
+    },
+    {
+      "id": 5590,
+      "player": "Katie",
+      "date": "June 19",
+      "isoDate": "Jun 19 2026",
+      "rounds": [
+        94,
+        96,
+        97,
+        95,
+        69
+      ],
+      "score": 876,
+      "reported": 876,
+      "perfect": 0
+    },
+    {
+      "id": 5601,
+      "player": "Ryan",
+      "date": "June 19",
+      "isoDate": "Jun 19 2026",
+      "rounds": [
+        95,
+        98,
+        95,
+        91,
+        87
+      ],
+      "score": 917,
+      "reported": 917,
+      "perfect": 0
+    },
+    {
+      "id": 5604,
+      "player": "Andy",
+      "date": "June 19",
+      "isoDate": "Jun 19 2026",
+      "rounds": [
+        99,
+        100,
+        95,
+        89,
+        96
+      ],
+      "score": 944,
+      "reported": 944,
+      "perfect": 1
+    },
+    {
+      "id": 5608,
+      "player": "Karen",
+      "date": "June 19",
+      "isoDate": "Jun 19 2026",
+      "rounds": [
+        91,
+        95,
+        96,
+        95,
+        32
+      ],
+      "score": 759,
+      "reported": 759,
+      "perfect": 0
+    },
+    {
+      "id": 5614,
+      "player": "Dan",
+      "date": "June 19",
+      "isoDate": "Jun 19 2026",
+      "rounds": [
+        98,
+        90,
+        97,
+        72,
+        92
+      ],
+      "score": 874,
+      "reported": 874,
       "perfect": 0
     }
   ]
