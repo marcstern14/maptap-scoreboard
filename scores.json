@@ -1,6 +1,6 @@
 {
-  "generated": "2026-06-23T09:13:36.616392",
-  "total": 456,
+  "generated": "2026-06-24T05:36:31.122764",
+  "total": 458,
   "scores": [
     {
       "id": 1123,
@@ -7297,6 +7297,38 @@
       "score": 966,
       "reported": 966,
       "perfect": 2
+    },
+    {
+      "id": 5787,
+      "player": "Ryan",
+      "date": "June 23",
+      "isoDate": "Jun 23 2026",
+      "rounds": [
+        99,
+        100,
+        95,
+        93,
+        89
+      ],
+      "score": 935,
+      "reported": 935,
+      "perfect": 1
+    },
+    {
+      "id": 5788,
+      "player": "Katie",
+      "date": "June 23",
+      "isoDate": "Jun 23 2026",
+      "rounds": [
+        99,
+        100,
+        97,
+        93,
+        84
+      ],
+      "score": 924,
+      "reported": 924,
+      "perfect": 1
     }
   ]
 }
