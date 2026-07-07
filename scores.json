@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-06T00:00:30.698958",
-  "total": 546,
+  "generated": "2026-07-07T09:01:19.980595",
+  "total": 553,
   "scores": [
     {
       "id": 1123,
@@ -8737,6 +8737,118 @@
       "score": 622,
       "reported": 622,
       "perfect": 0
+    },
+    {
+      "id": 6744,
+      "player": "Jill",
+      "date": "July 6",
+      "isoDate": "Jul 6 2026",
+      "rounds": [
+        96,
+        95,
+        88,
+        84,
+        46
+      ],
+      "score": 757,
+      "reported": 757,
+      "perfect": 0
+    },
+    {
+      "id": 6753,
+      "player": "Dan",
+      "date": "July 6",
+      "isoDate": "Jul 6 2026",
+      "rounds": [
+        82,
+        96,
+        96,
+        64,
+        0
+      ],
+      "score": 562,
+      "reported": 562,
+      "perfect": 0
+    },
+    {
+      "id": 6759,
+      "player": "Ryan",
+      "date": "July 6",
+      "isoDate": "Jul 6 2026",
+      "rounds": [
+        94,
+        98,
+        80,
+        100,
+        73
+      ],
+      "score": 871,
+      "reported": 871,
+      "perfect": 1
+    },
+    {
+      "id": 6760,
+      "player": "Katie",
+      "date": "July 6",
+      "isoDate": "Jul 6 2026",
+      "rounds": [
+        100,
+        97,
+        95,
+        90,
+        33
+      ],
+      "score": 756,
+      "reported": 756,
+      "perfect": 1
+    },
+    {
+      "id": 6761,
+      "player": "Caitlin",
+      "date": "July 6",
+      "isoDate": "Jul 6 2026",
+      "rounds": [
+        99,
+        99,
+        95,
+        100,
+        27
+      ],
+      "score": 769,
+      "reported": 769,
+      "perfect": 1
+    },
+    {
+      "id": 6762,
+      "player": "Marc",
+      "date": "July 6",
+      "isoDate": "Jul 6 2026",
+      "rounds": [
+        99,
+        99,
+        96,
+        100,
+        30
+      ],
+      "score": 780,
+      "reported": 780,
+      "perfect": 1
+    },
+    {
+      "id": 6773,
+      "player": "Andy",
+      "date": "July 6",
+      "isoDate": "Jul 6 2026",
+      "rounds": [
+        100,
+        98,
+        98,
+        100,
+        32
+      ],
+      "score": 790,
+      "reported": 790,
+      "perfect": 2
     }
   ]
 }
