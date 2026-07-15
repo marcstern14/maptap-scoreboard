@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-14T09:01:24.460149",
-  "total": 595,
+  "generated": "2026-07-15T05:46:04.347516",
+  "total": 602,
   "scores": [
     {
       "id": 1123,
@@ -9520,6 +9520,118 @@
       ],
       "score": 550,
       "reported": 550,
+      "perfect": 0
+    },
+    {
+      "id": 7232,
+      "player": "Dan",
+      "date": "July 14",
+      "isoDate": "Jul 14 2026",
+      "rounds": [
+        93,
+        98,
+        95,
+        82,
+        72
+      ],
+      "score": 843,
+      "reported": 843,
+      "perfect": 0
+    },
+    {
+      "id": 7233,
+      "player": "Jill",
+      "date": "July 14",
+      "isoDate": "Jul 14 2026",
+      "rounds": [
+        81,
+        97,
+        95,
+        87,
+        60
+      ],
+      "score": 809,
+      "reported": 809,
+      "perfect": 0
+    },
+    {
+      "id": 7237,
+      "player": "Andy",
+      "date": "July 14",
+      "isoDate": "Jul 14 2026",
+      "rounds": [
+        99,
+        100,
+        80,
+        92,
+        75
+      ],
+      "score": 860,
+      "reported": 860,
+      "perfect": 1
+    },
+    {
+      "id": 7248,
+      "player": "Caitlin",
+      "date": "July 14",
+      "isoDate": "Jul 14 2026",
+      "rounds": [
+        89,
+        97,
+        83,
+        89,
+        8
+      ],
+      "score": 643,
+      "reported": 643,
+      "perfect": 0
+    },
+    {
+      "id": 7271,
+      "player": "Karen",
+      "date": "July 14",
+      "isoDate": "Jul 14 2026",
+      "rounds": [
+        95,
+        82,
+        78,
+        86,
+        25
+      ],
+      "score": 666,
+      "reported": 666,
+      "perfect": 0
+    },
+    {
+      "id": 7273,
+      "player": "Marc",
+      "date": "July 14",
+      "isoDate": "Jul 14 2026",
+      "rounds": [
+        96,
+        98,
+        80,
+        79,
+        82
+      ],
+      "score": 837,
+      "reported": 837,
+      "perfect": 0
+    },
+    {
+      "id": 7295,
+      "player": "Katie",
+      "date": "July 14",
+      "isoDate": "Jul 14 2026",
+      "rounds": [
+        97,
+        81,
+        71,
+        49,
+        48
+      ],
+      "score": 611,
+      "reported": 611,
       "perfect": 0
     }
   ]
