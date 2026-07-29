@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-28T09:00:02.944475",
-  "total": 665,
+  "generated": "2026-07-29T04:48:55.615573",
+  "total": 667,
   "scores": [
     {
       "id": 1123,
@@ -10640,6 +10640,38 @@
       ],
       "score": 937,
       "reported": 937,
+      "perfect": 1
+    },
+    {
+      "id": 7979,
+      "player": "Jill",
+      "date": "July 28",
+      "isoDate": "Jul 28 2026",
+      "rounds": [
+        93,
+        94,
+        83,
+        72,
+        98
+      ],
+      "score": 863,
+      "reported": 863,
+      "perfect": 0
+    },
+    {
+      "id": 7980,
+      "player": "Andy",
+      "date": "July 28",
+      "isoDate": "Jul 28 2026",
+      "rounds": [
+        100,
+        99,
+        74,
+        84,
+        80
+      ],
+      "score": 839,
+      "reported": 839,
       "perfect": 1
     }
   ]
