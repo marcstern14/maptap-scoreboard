@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-29T10:05:39.601096",
-  "total": 667,
+  "generated": "2026-07-30T05:39:10.202196",
+  "total": 673,
   "scores": [
     {
       "id": 1123,
@@ -10673,6 +10673,102 @@
       "score": 839,
       "reported": 839,
       "perfect": 1
+    },
+    {
+      "id": 8035,
+      "player": "Jill",
+      "date": "July 29",
+      "isoDate": "Jul 29 2026",
+      "rounds": [
+        84,
+        77,
+        82,
+        76,
+        80
+      ],
+      "score": 793,
+      "reported": 793,
+      "perfect": 0
+    },
+    {
+      "id": 8037,
+      "player": "Katie",
+      "date": "July 29",
+      "isoDate": "Jul 29 2026",
+      "rounds": [
+        68,
+        98,
+        89,
+        80,
+        95
+      ],
+      "score": 869,
+      "reported": 869,
+      "perfect": 0
+    },
+    {
+      "id": 8038,
+      "player": "Caitlin",
+      "date": "July 29",
+      "isoDate": "Jul 29 2026",
+      "rounds": [
+        99,
+        87,
+        88,
+        80,
+        67
+      ],
+      "score": 803,
+      "reported": 803,
+      "perfect": 0
+    },
+    {
+      "id": 8071,
+      "player": "Andy",
+      "date": "July 29",
+      "isoDate": "Jul 29 2026",
+      "rounds": [
+        92,
+        100,
+        87,
+        90,
+        71
+      ],
+      "score": 849,
+      "reported": 849,
+      "perfect": 1
+    },
+    {
+      "id": 8073,
+      "player": "Karen",
+      "date": "July 29",
+      "isoDate": "Jul 29 2026",
+      "rounds": [
+        84,
+        82,
+        83,
+        80,
+        94
+      ],
+      "score": 854,
+      "reported": 854,
+      "perfect": 0
+    },
+    {
+      "id": 8097,
+      "player": "Dan",
+      "date": "July 29",
+      "isoDate": "Jul 29 2026",
+      "rounds": [
+        97,
+        82,
+        96,
+        79,
+        98
+      ],
+      "score": 902,
+      "reported": 902,
+      "perfect": 0
     }
   ]
 }
