@@ -1,6 +1,6 @@
 {
-  "generated": "2026-08-01T05:33:01.441650",
-  "total": 683,
+  "generated": "2026-08-02T05:31:37.760237",
+  "total": 689,
   "scores": [
     {
       "id": 1123,
@@ -10929,6 +10929,102 @@
       "score": 822,
       "reported": 822,
       "perfect": 0
+    },
+    {
+      "id": 8234,
+      "player": "Andy",
+      "date": "August 1",
+      "isoDate": "Aug 1 2026",
+      "rounds": [
+        100,
+        97,
+        100,
+        77,
+        97
+      ],
+      "score": 919,
+      "reported": 919,
+      "perfect": 2
+    },
+    {
+      "id": 8247,
+      "player": "Dan",
+      "date": "August 1",
+      "isoDate": "Aug 1 2026",
+      "rounds": [
+        82,
+        89,
+        94,
+        82,
+        89
+      ],
+      "score": 872,
+      "reported": 872,
+      "perfect": 0
+    },
+    {
+      "id": 8249,
+      "player": "Katie",
+      "date": "August 1",
+      "isoDate": "Aug 1 2026",
+      "rounds": [
+        95,
+        97,
+        88,
+        31,
+        91
+      ],
+      "score": 734,
+      "reported": 734,
+      "perfect": 0
+    },
+    {
+      "id": 8267,
+      "player": "Jill",
+      "date": "August 1",
+      "isoDate": "Aug 1 2026",
+      "rounds": [
+        80,
+        94,
+        90,
+        75,
+        34
+      ],
+      "score": 681,
+      "reported": 681,
+      "perfect": 0
+    },
+    {
+      "id": 8268,
+      "player": "Karen",
+      "date": "August 1",
+      "isoDate": "Aug 1 2026",
+      "rounds": [
+        68,
+        99,
+        97,
+        28,
+        10
+      ],
+      "score": 475,
+      "reported": 475,
+      "perfect": 0
+    },
+    {
+      "id": 8269,
+      "player": "Caitlin",
+      "date": "August 1",
+      "isoDate": "Aug 1 2026",
+      "rounds": [
+        100,
+        95,
+        89,
+        42,
+        17
+      ],
+      "score": 550,
+      "reported": 550,
+      "perfect": 1
     }
   ]
 }
