@@ -1,6 +1,6 @@
 {
-  "generated": "2026-08-18T08:24:24.239790",
-  "total": 752,
+  "generated": "2026-08-19T08:01:41.589906",
+  "total": 756,
   "scores": [
     {
       "id": 1123,
@@ -12033,6 +12033,70 @@
       "score": 843,
       "reported": 843,
       "perfect": 1
+    },
+    {
+      "id": 9075,
+      "player": "Andy",
+      "date": "August 18",
+      "isoDate": "Aug 18 2026",
+      "rounds": [
+        100,
+        88,
+        100,
+        84,
+        90
+      ],
+      "score": 910,
+      "reported": 910,
+      "perfect": 2
+    },
+    {
+      "id": 9076,
+      "player": "Katie",
+      "date": "August 18",
+      "isoDate": "Aug 18 2026",
+      "rounds": [
+        99,
+        89,
+        93,
+        69,
+        90
+      ],
+      "score": 851,
+      "reported": 851,
+      "perfect": 0
+    },
+    {
+      "id": 9077,
+      "player": "Jill",
+      "date": "August 18",
+      "isoDate": "Aug 18 2026",
+      "rounds": [
+        99,
+        84,
+        89,
+        69,
+        65
+      ],
+      "score": 763,
+      "reported": 763,
+      "perfect": 0
+    },
+    {
+      "id": 9091,
+      "player": "Dan",
+      "date": "August 18",
+      "isoDate": "Aug 18 2026",
+      "rounds": [
+        99,
+        87,
+        83,
+        85,
+        94
+      ],
+      "score": 889,
+      "reported": 889,
+      "perfect": 0
     }
   ]
 }
