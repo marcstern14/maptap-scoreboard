@@ -1,6 +1,6 @@
 {
-  "generated": "2026-08-21T08:02:20.298217",
-  "total": 767,
+  "generated": "2026-08-24T09:30:18.566313",
+  "total": 769,
   "scores": [
     {
       "id": 1123,
@@ -12272,6 +12272,38 @@
       ],
       "score": 711,
       "reported": 711,
+      "perfect": 0
+    },
+    {
+      "id": 9168,
+      "player": "Cierra",
+      "date": "August 21",
+      "isoDate": "Aug 21 2026",
+      "rounds": [
+        96,
+        96,
+        84,
+        60,
+        45
+      ],
+      "score": 675,
+      "reported": 675,
+      "perfect": 0
+    },
+    {
+      "id": 9185,
+      "player": "Andy",
+      "date": "August 21",
+      "isoDate": "Aug 21 2026",
+      "rounds": [
+        97,
+        79,
+        98,
+        67,
+        95
+      ],
+      "score": 858,
+      "reported": 858,
       "perfect": 0
     }
   ]
